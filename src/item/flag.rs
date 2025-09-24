@@ -1,0 +1,2 @@
+pub const ENGAGE_WEAPON: i32 = 128;
+pub const REVERSE_ATTRIBUTE: i32 = 65536;
