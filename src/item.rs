@@ -1,4 +1,6 @@
+pub mod check_use;
 pub mod flag;
+mod heal_override;
 pub mod kind;
 pub mod use_type;
 use engage::gamedata::item::{ItemData, UnitItem, UnitItemList};
@@ -9,6 +11,8 @@ pub trait ItemTrait {
     fn is_engage_weapon(&self) -> bool;
     fn is_magic_weapon(&self) -> bool;
     fn is_silence_target(&self) -> bool;
+    fn is_tiki_blessing(&self) -> bool;
+    fn get_heal_overrided(&self) -> Option<i32>;
 }
 
 impl ItemTrait for ItemData {
@@ -25,6 +29,24 @@ impl ItemTrait for ItemData {
             kind::ROD => true,
             _ => self.is_magic_weapon(),
         }
+    }
+    fn is_tiki_blessing(&self) -> bool {
+        let skills = self.get_equip_skills();
+        skills.find_sid(Il2CppString::new("SID_祝福")).is_some()
+    }
+    fn get_heal_overrided(&self) -> Option<i32> {
+        let item_skills = self.get_equip_skills();
+        let mut heal_overrided: Option<i32> = None;
+        for skill in item_skills.iter() {
+            if let Some(skill_data) = skill.get_skill() {
+                let sid = skill_data.sid.to_string();
+                if let Some(number) = sid.strip_prefix("SID_HealOverride_") {
+                    heal_overrided = number.parse::<i32>().ok();
+                    break;
+                }
+            }
+        }
+        heal_overrided
     }
 }
 
@@ -58,3 +80,7 @@ pub fn unit_item_list_get_equipped_index(
     unit_item_list: &UnitItemList,
     method: OptionalMethod,
 ) -> i32;
+pub fn install() {
+    check_use::install();
+    heal_override::install();
+}

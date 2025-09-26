@@ -1,5 +1,26 @@
-use engage::{gamedata::unit::Unit, mapmind::MapMind};
+use std::num::NonZero;
+
+use engage::{
+    gamedata::{skill::SkillData, unit::Unit},
+    mapmind::MapMind,
+};
 use unity::{il2cpp::object::Il2CppArray, prelude::*};
+
+pub struct Map;
+
+impl Map {
+    pub fn can_enter_terrain(unit: &Unit, x: i32, z: i32) -> bool {
+        unsafe { map_can_enter_terrain(unit, x, z, None) }
+    }
+}
+
+pub struct MapSkill;
+
+impl MapSkill {
+    pub fn is_sight_out(unit: &Unit, x: i32, z: i32) -> bool {
+        unsafe { map_skill_is_sight_out(unit, x, z, None) }
+    }
+}
 
 #[repr(C)]
 #[unity::class("App", "MapSequenceMind")]
@@ -51,5 +72,66 @@ impl MapMindTrait for MapMind {
     }
 }
 
+#[repr(C)]
+pub struct MapSkillResult {
+    pub moved: bool,
+    pub unit: Option<&'static Unit>,
+    pub x: i32,
+    pub z: i32,
+}
+
+impl MapSkillResult {
+    pub fn init(&mut self) {
+        self.moved = false;
+        self.x = 0;
+        self.z = 0;
+        self.unit = None;
+    }
+    pub fn assign_unit_unchecked(&mut self, unit: &'static Unit) {
+        self.moved = false;
+        self.unit = Some(unit);
+        self.x = unit.x as i32;
+        self.z = unit.z as i32;
+    }
+    pub fn assign_unit(&mut self, unit: Option<&'static Unit>) {
+        if unit.is_some() {
+            self.assign_unit_unchecked(unit.unwrap());
+        } else {
+            self.init();
+        }
+    }
+}
+
+#[repr(C)]
+pub struct MapSkillResults {
+    pub skill: Option<&'static SkillData>,
+    pub current: MapSkillResult,
+    pub reverse: MapSkillResult,
+}
+
+impl MapSkillResults {
+    pub fn init(&mut self) {
+        self.skill = None;
+        self.current.init();
+        self.reverse.init();
+    }
+}
+
+// #[unity::class("App", "MapTarget")]
+// pub struct MapTarget {
+//     _junk0: [u8; 0x10],
+//     pub unit: &'static Unit,
+//     pub x: u8,
+//     pub z: u8,
+//     _junk1: [u8; 0x36],
+//     pub command_skill: Option<&'static SkillData>,
+// }
+
+#[skyline::from_offset(0x01EECF90)]
+fn map_can_enter_terrain(unit: &Unit, x: i32, z: i32, method: OptionalMethod) -> bool;
+
 #[skyline::from_offset(0x01DEE2B0)]
 fn map_mind_get_unit(this: &MapMind, method: OptionalMethod) -> &Unit;
+
+#[skyline::from_offset(0x01F4EA60)]
+fn map_skill_is_sight_out(unit: &Unit, x: i32, z: i32, method: OptionalMethod) -> bool;

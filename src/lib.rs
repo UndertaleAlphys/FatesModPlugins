@@ -5,7 +5,10 @@ mod class;
 mod combat;
 mod item;
 mod map;
+mod menu;
+mod misc;
 mod skill;
+mod terrain;
 mod unit;
 mod util;
 use unity::prelude::*;
@@ -60,4 +63,7 @@ pub fn main() {
     combat::install();
     skill::install();
     unit::install();
+    item::install();
+    misc::install();
+    terrain::install();
 }

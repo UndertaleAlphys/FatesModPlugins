@@ -3,6 +3,7 @@ use engage::gamedata::{skill::SkillData, unit::Gender, Gamedata, JobData};
 
 pub mod change;
 pub mod flag;
+pub mod move_type;
 pub mod skill;
 
 #[derive(PartialEq)]
@@ -17,6 +18,7 @@ pub trait ClassTrait {
     fn has_class_skill(&self) -> bool;
     fn get_class_learn_skill_level(&self) -> i32;
     fn get_gender_lock(&self) -> Option<Gender>;
+    fn is_fly(&self) -> bool;
 }
 
 impl ClassTrait for JobData {
@@ -58,6 +60,9 @@ impl ClassTrait for JobData {
         } else {
             None
         }
+    }
+    fn is_fly(&self) -> bool {
+        self.move_type == move_type::FLY
     }
 }
 
