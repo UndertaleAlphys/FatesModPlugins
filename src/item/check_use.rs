@@ -3,7 +3,9 @@ use crate::{
     unit::UnitTrait,
 };
 use engage::gamedata::{item::ItemData, skill::SkillArray, unit::Unit};
+use skyline::hooks::InlineCtx;
 use unity::prelude::*;
+
 #[skyline::hook(offset = 0x01DEA700)]
 fn can_item_use(
     unit: Option<&Unit>,
@@ -40,6 +42,13 @@ fn can_item_use(
     }
 }
 
+#[skyline::hook(offset = 0x01FCB0F0, inline)]
+fn enable_sortie_item_use(ctx: &mut InlineCtx) {
+    // Give Skill Command
+    let flag = 1u64 << 31;
+    unsafe { *ctx.registers[9].x.as_mut() |= flag };
+}
+
 pub fn install() {
-    skyline::install_hook!(can_item_use);
+    skyline::install_hooks!(can_item_use, enable_sortie_item_use);
 }

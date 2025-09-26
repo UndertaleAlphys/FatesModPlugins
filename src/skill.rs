@@ -2,6 +2,8 @@ mod canto;
 pub mod flag;
 pub mod map;
 pub mod overlap;
+mod weapon_expert;
+mod winged_sheild;
 use engage::gamedata::{skill::SkillData, unit::Unit};
 use unity::prelude::OptionalMethod;
 pub trait SkillTrait {
@@ -47,4 +49,6 @@ pub fn install() {
     canto::install();
     overlap::install();
     map::install();
+    weapon_expert::install();
+    winged_sheild::install();
 }

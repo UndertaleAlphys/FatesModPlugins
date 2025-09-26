@@ -1,4 +1,4 @@
-use std::cmp::Reverse;
+use std::{cmp::Reverse, ptr::NonNull};
 
 use crate::{
     map::{Map, MapSkill, MapSkillResult, MapSkillResults},
@@ -55,7 +55,6 @@ fn map_skill_prediction_impl(
     let x_diff = reverse_center.0 - current_center.0;
     let z_diff = reverse_center.1 - current_center.1;
     let is_before_move = skill.get_flag().contains(flag::BEFORE_MOVE);
-    let move_target = if is_before_move { 0 } else { move_target };
     predict_single_unit(
         current,
         reverse,
@@ -96,6 +95,11 @@ fn map_skill_prediction_impl(
     // );
     let final_result =
         results.current.moved == (move_self != 0) && results.reverse.moved == (move_target != 0);
+    // if final_result {
+    //     println!("Moved");
+    // } else {
+    //     println!("Not Moved");
+    // }
     final_result
 }
 
@@ -209,14 +213,16 @@ fn enable_resurrection_unit_move(ctx: &mut InlineCtx) {
 #[skyline::hook(offset = 0x02C2A584, inline)]
 fn before_move_range_i(ctx: &mut InlineCtx) {
     let range = unsafe { *ctx.registers[8].w.as_ref() };
-    unsafe { *ctx.registers[8].w.as_mut() = 1 }
+    let move_self = unsafe { *ctx.registers[8].w.as_ref() };
+    let range_i = range - move_self + 1;
+    unsafe { *ctx.registers[8].w.as_mut() = range_i }
 }
 
 #[skyline::hook(offset = 0x02C2A590, inline)]
 fn before_move_range_o(ctx: &mut InlineCtx) {
-    // Do not need now
     let range = unsafe { *ctx.registers[8].w.as_ref() };
-    unsafe { *ctx.registers[8].w.as_mut() = 99 }
+    let range_o = range + 0;
+    unsafe { *ctx.registers[8].w.as_mut() = range_o }
 }
 
 #[skyline::hook(offset = 0x01DC53BC, inline)]
@@ -259,20 +265,64 @@ fn before_move_x_2(ctx: &mut InlineCtx) {
     unsafe { *ctx.registers[25].w.as_mut() = result as u32 };
 }
 
+//3，4
+
+#[skyline::hook(offset = 0x01E7941C, inline)]
+fn before_move_z_3(ctx: &mut InlineCtx) {
+    let w8 = unsafe { *ctx.registers[8].w.as_ref() } as i32;
+    let w9 = unsafe { *ctx.registers[9].w.as_ref() } as i32;
+    let w21 = unsafe { *ctx.registers[21].w.as_ref() } as i32;
+    let offset = if w9 < 0 { w9 + 1 } else { 0 };
+    let result = w21 + w8 + offset;
+    unsafe { *ctx.registers[21].w.as_mut() = result as u32 };
+}
+
+#[skyline::hook(offset = 0x01E7940C, inline)]
+fn before_move_z_4(ctx: &mut InlineCtx) {
+    let w8 = unsafe { *ctx.registers[8].w.as_ref() } as i32;
+    let w9 = unsafe { *ctx.registers[9].w.as_ref() } as i32;
+    let w21 = unsafe { *ctx.registers[21].w.as_ref() } as i32;
+    let offset = if w9 > 0 { w9 - 1 } else { 0 };
+    let result = w21 - w8 + offset;
+    unsafe { *ctx.registers[21].w.as_mut() = result as u32 };
+}
+
+#[skyline::hook(offset = 0x01E79420, inline)]
+fn before_move_x_3(ctx: &mut InlineCtx) {
+    let w8 = unsafe { *ctx.registers[8].w.as_ref() } as i32;
+    let w10 = unsafe { *ctx.registers[10].w.as_ref() } as i32;
+    let w23 = unsafe { *ctx.registers[23].w.as_ref() } as i32;
+    let offset = if w10 < 0 { w10 + 1 } else { 0 };
+    let result = w23 + w8 + offset;
+    unsafe { *ctx.registers[23].w.as_mut() = result as u32 };
+}
+
+#[skyline::hook(offset = 0x01E793FC, inline)]
+fn before_move_x_4(ctx: &mut InlineCtx) {
+    let w8 = unsafe { *ctx.registers[8].w.as_ref() } as i32;
+    let w10 = unsafe { *ctx.registers[10].w.as_ref() } as i32;
+    let w23 = unsafe { *ctx.registers[23].w.as_ref() } as i32;
+    let offset = if w10 > 0 { w10 - 1 } else { 0 };
+    let result = w23 - w8 + offset;
+    unsafe { *ctx.registers[23].w.as_mut() = result as u32 };
+}
 pub fn install() {
     skyline::install_hooks!(
         map_skill_prediction_impl,
         enable_resurrection_unit_move,
+        before_move_range_i,
+        before_move_range_o,
         before_move_x_1,
         before_move_x_2,
         before_move_z_1,
         before_move_z_2,
+        before_move_x_3,
+        before_move_x_4,
+        before_move_z_3,
+        before_move_z_4,
     );
     // nops
     Patch::in_text(0x023BC484)
-        .bytes([0x1F, 0x20, 0x03, 0xD5])
-        .unwrap();
-    Patch::in_text(0x02C2A580)
         .bytes([0x1F, 0x20, 0x03, 0xD5])
         .unwrap();
 }

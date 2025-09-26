@@ -53,6 +53,8 @@ impl ItemTrait for ItemData {
 pub trait ItemListTrait {
     fn get_equipped_item(&self) -> Option<&UnitItem>;
     fn get_equipped_index(&self) -> Option<i32>;
+    fn equip(&self, idx: i32);
+    fn take_off(&self, idx: i32) -> bool;
 }
 
 impl ItemListTrait for UnitItemList {
@@ -67,19 +69,30 @@ impl ItemListTrait for UnitItemList {
             Some(idx)
         }
     }
+    fn equip(&self, idx: i32) {
+        unsafe {
+            unit_item_list_equip(self, idx, None);
+        }
+    }
+
+    fn take_off(&self, idx: i32) -> bool {
+        unsafe { unit_item_list_take_off(self, idx, None) }
+    }
 }
 
 #[skyline::from_offset(0x01FB4C90)]
-pub fn unit_item_list_get_equipped_item(
+fn unit_item_list_get_equipped_item(
     unit_item_list: &UnitItemList,
     method: OptionalMethod,
 ) -> Option<&UnitItem>;
-
 #[skyline::from_offset(0x01FB47E0)]
-pub fn unit_item_list_get_equipped_index(
-    unit_item_list: &UnitItemList,
-    method: OptionalMethod,
-) -> i32;
+fn unit_item_list_get_equipped_index(unit_item_list: &UnitItemList, method: OptionalMethod) -> i32;
+#[skyline::from_offset(0x01FB4760)]
+fn unit_item_list_equip(unit_item_list: &UnitItemList, idx: i32, method: OptionalMethod);
+#[skyline::from_offset(0x01FB4900)]
+fn unit_item_list_take_off(unit_item_list: &UnitItemList, idx: i32, method: OptionalMethod)
+    -> bool;
+
 pub fn install() {
     check_use::install();
     heal_override::install();

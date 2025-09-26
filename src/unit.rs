@@ -19,6 +19,7 @@ pub trait UnitTrait {
     fn get_center_cell(&self) -> Option<(i32, i32)>;
     fn can_be_moved(&self) -> bool;
     fn can_revive(&self) -> bool;
+    fn auto_equip_item(&self);
 }
 
 impl UnitTrait for Unit {
@@ -80,6 +81,9 @@ impl UnitTrait for Unit {
     fn can_revive(&self) -> bool {
         unsafe { unit_can_revive(self, None) }
     }
+    fn auto_equip_item(&self) {
+        unsafe { unit_item_equip(self, None) };
+    }
 }
 
 #[skyline::from_offset(0x01A5D430)]
@@ -102,6 +106,9 @@ fn unit_can_external_move(unit: &Unit, method: OptionalMethod) -> bool;
 
 #[skyline::from_offset(0x01A4F860)]
 fn unit_can_revive(unit: &Unit, method: OptionalMethod) -> bool;
+
+#[skyline::from_offset(0x01A21530)]
+fn unit_item_equip(this: &Unit, method: OptionalMethod);
 
 pub fn install() {
     capability::install();
