@@ -1,0 +1,21 @@
+"filename", "language", "Rust", "XML", "comment", "blank", "total"
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\IFmodPlugins.iml", "XML", 0, 11, 0, 0, 11
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\modules.xml", "XML", 0, 8, 0, 0, 8
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\vcs.xml", "XML", 0, 6, 0, 0, 6
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator.rs", "Rust", 15, 0, 0, 3, 18
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\command.rs", "Rust", 7, 0, 0, 1, 8
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\item.rs", "Rust", 51, 0, 1, 4, 56
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\terrain.rs", "Rust", 142, 0, 3, 12, 157
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\util.rs", "Rust", 97, 0, 0, 10, 107
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\battle_info.rs", "Rust", 12, 0, 0, 2, 14
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\silence.rs", "Rust", -2, 0, 2, 0, 0
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\flag.rs", "Rust", 0, 0, 0, -1, -1
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\lib.rs", "Rust", 2, 0, 0, 0, 2
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\map.rs", "Rust", 19, 0, 0, 3, 22
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill.rs", "Rust", 7, 0, 0, 1, 8
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\bad_states.rs", "Rust", 2, 0, 0, 1, 3
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\flag.rs", "Rust", 1, 0, 0, 0, 1
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\terrain.rs", "Rust", 6, 0, 0, 2, 8
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit.rs", "Rust", 65, 0, 0, 2, 67
+"c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\terrain.rs", "Rust", 79, 0, 0, 9, 88
+"Total", "-", 503, 25, 6, 49, 583

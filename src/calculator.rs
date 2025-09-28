@@ -1,0 +1,17 @@
+use engage::calculator::*;
+use unity::prelude::OptionalMethod;
+mod command;
+mod item;
+mod terrain;
+mod util;
+
+#[unity::hook("App", "UnitCalculator", "AddCommand")]
+pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMethod) {
+    call_original!(manager, method_info);
+    terrain::add(manager);
+    item::add(manager);
+}
+
+pub fn install() {
+    skyline::install_hook!(add_command_hook);
+}

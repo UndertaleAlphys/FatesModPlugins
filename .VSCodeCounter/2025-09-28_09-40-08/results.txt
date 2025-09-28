@@ -1,0 +1,99 @@
+Date : 2025-09-28 09:40:08
+Directory : c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins
+Total : 58 files,  2444 codes, 69 comments, 263 blanks, all 2776 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Rust     |         55 |      2,419 |         69 |        263 |      2,751 |
+| XML      |          3 |         25 |          0 |          0 |         25 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                       | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                          |         58 |      2,444 |         69 |        263 |      2,776 |
+| .idea                                                                                      |          3 |         25 |          0 |          0 |         25 |
+| src                                                                                        |         55 |      2,419 |         69 |        263 |      2,751 |
+| src (Files)                                                                                |         12 |        642 |         32 |         78 |        752 |
+| src\calculator                                                                             |          4 |        297 |          4 |         27 |        328 |
+| src\class                                                                                  |          6 |        182 |          2 |         28 |        212 |
+| src\class (Files)                                                                          |          4 |         39 |          1 |          8 |         48 |
+| src\class\change                                                                           |          2 |        143 |          1 |         20 |        164 |
+| src\combat                                                                                 |          6 |        143 |          4 |         17 |        164 |
+| src\item                                                                                   |          5 |        130 |          3 |          7 |        140 |
+| src\misc                                                                                   |          5 |         68 |          1 |         12 |         81 |
+| src\skill                                                                                  |          7 |        459 |         23 |         36 |        518 |
+| src\terrain                                                                                |          2 |         40 |          0 |          4 |         44 |
+| src\unit                                                                                   |          5 |        398 |          0 |         40 |        438 |
+| src\unit (Files)                                                                           |          3 |        100 |          0 |         13 |        113 |
+| src\unit\capability                                                                        |          2 |        298 |          0 |         27 |        325 |
+| src\util                                                                                   |          3 |         60 |          0 |         14 |         74 |
++--------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                   | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\IFmodPlugins.iml            | XML      |         11 |          0 |          0 |         11 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\modules.xml                 | XML      |          8 |          0 |          0 |          8 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\.idea\vcs.xml                     | XML      |          6 |          0 |          0 |          6 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator.rs                 | Rust     |         15 |          0 |          3 |         18 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\command.rs         | Rust     |          7 |          0 |          1 |          8 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\item.rs            | Rust     |         51 |          1 |          4 |         56 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\terrain.rs         | Rust     |        142 |          3 |         12 |        157 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\calculator\util.rs            | Rust     |         97 |          0 |         10 |        107 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class.rs                      | Rust     |         79 |          0 |          8 |         87 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\change.rs               | Rust     |          6 |          0 |          0 |          6 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\change\gender_lock.rs   | Rust     |         28 |          0 |          5 |         33 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\change\level.rs         | Rust     |        115 |          1 |         15 |        131 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\flag.rs                 | Rust     |          6 |          0 |          1 |          7 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\move_type.rs            | Rust     |          4 |          0 |          1 |          5 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\class\skill.rs                | Rust     |         23 |          1 |          6 |         30 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat.rs                     | Rust     |         12 |          0 |          1 |         13 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\ai.rs                  | Rust     |         18 |          0 |          1 |         19 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\battle_info.rs         | Rust     |         37 |          0 |          7 |         44 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\engage_count.rs        | Rust     |          9 |          0 |          2 |         11 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\no_dynlv.rs            | Rust     |         17 |          1 |          2 |         20 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\silence.rs             | Rust     |         53 |          3 |          4 |         60 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\combat\skill_point.rs         | Rust     |          9 |          0 |          1 |         10 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item.rs                       | Rust     |         92 |          0 |          8 |        100 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\check_use.rs             | Rust     |         50 |          1 |          4 |         55 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\flag.rs                  | Rust     |          2 |          0 |          0 |          2 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\heal_override.rs         | Rust     |         14 |          2 |          1 |         17 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\kind.rs                  | Rust     |         21 |          0 |          1 |         22 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\item\use_type.rs              | Rust     |         43 |          0 |          1 |         44 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\lib.rs                        | Rust     |         43 |         23 |          6 |         72 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\map.rs                        | Rust     |        128 |          9 |         23 |        160 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\menu.rs                       | Rust     |         10 |          0 |          1 |         11 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc.rs                       | Rust     |         12 |          0 |          2 |         14 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc\no_investment.rs         | Rust     |          9 |          0 |          2 |         11 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc\no_skirmishes.rs         | Rust     |         11 |          1 |          2 |         14 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc\no_well.rs               | Rust     |          9 |          0 |          3 |         12 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc\patch_msg.rs             | Rust     |         31 |          0 |          3 |         34 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\misc\save_header.rs           | Rust     |          8 |          0 |          2 |         10 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill.rs                      | Rust     |         55 |          0 |          8 |         63 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\bad_states.rs           | Rust     |          2 |          0 |          1 |          3 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\canto.rs                | Rust     |         59 |          0 |          5 |         64 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\flag.rs                 | Rust     |          3 |          0 |          1 |          4 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\map.rs                  | Rust     |        287 |         23 |         19 |        329 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\overlap.rs              | Rust     |         30 |          0 |          1 |         31 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\weapon_expert.rs        | Rust     |         20 |          0 |          2 |         22 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\skill\winged_sheild.rs        | Rust     |         58 |          0 |          7 |         65 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\terrain.rs                    | Rust     |         24 |          0 |          4 |         28 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\terrain\limit_expansion.rs    | Rust     |          8 |          0 |          1 |          9 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\terrain\percentage.rs         | Rust     |         32 |          0 |          3 |         35 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit.rs                       | Rust     |        169 |          0 |         14 |        183 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\capability.rs            | Rust     |         20 |          0 |          3 |         23 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\capability\limit.rs      | Rust     |        181 |          0 |         24 |        205 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\capability\multiplier.rs | Rust     |        117 |          0 |          3 |        120 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\status.rs                | Rust     |          1 |          0 |          1 |          2 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\unit\terrain.rs               | Rust     |         79 |          0 |          9 |         88 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\util.rs                       | Rust     |          3 |          0 |          0 |          3 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\util\bitmask.rs               | Rust     |         21 |          0 |          5 |         26 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\util\language.rs              | Rust     |          7 |          0 |          2 |          9 |
+| c:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\src\util\thread_safe.rs           | Rust     |         32 |          0 |          7 |         39 |
+| Total                                                                                      |          |      2,444 |         69 |        263 |      2,776 |
++--------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
