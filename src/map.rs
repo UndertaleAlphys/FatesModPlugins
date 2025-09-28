@@ -1,7 +1,11 @@
 use std::num::NonZero;
 
 use engage::{
-    gamedata::{skill::SkillData, unit::Unit},
+    gamedata::{skill::SkillData, terrain::TerrainData, unit::Unit},
+    map::{
+        image::{MapImage, MapImageTerrain},
+        terrain::MapTerrain,
+    },
     mapmind::MapMind,
 };
 use unity::{il2cpp::object::Il2CppArray, prelude::*};
@@ -117,6 +121,16 @@ impl MapSkillResults {
     }
 }
 
+pub trait MapImageTerrainTrait {
+    fn get_terrain(&self, x: i32, z: i32) -> Option<&TerrainData>;
+}
+
+impl MapImageTerrainTrait for MapImageTerrain {
+    fn get_terrain(&self, x: i32, z: i32) -> Option<&TerrainData> {
+        unsafe { map_image_terrain_get_terrain_data(self, x, z, None) }
+    }
+}
+
 // #[unity::class("App", "MapTarget")]
 // pub struct MapTarget {
 //     _junk0: [u8; 0x10],
@@ -135,3 +149,11 @@ fn map_mind_get_unit(this: &MapMind, method: OptionalMethod) -> &Unit;
 
 #[skyline::from_offset(0x01F4EA60)]
 fn map_skill_is_sight_out(unit: &Unit, x: i32, z: i32, method: OptionalMethod) -> bool;
+
+#[skyline::from_offset(0x02064ED0)]
+fn map_image_terrain_get_terrain_data(
+    this: &MapImageTerrain,
+    x: i32,
+    z: i32,
+    method: OptionalMethod,
+) -> Option<&TerrainData>;

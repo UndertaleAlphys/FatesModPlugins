@@ -1,4 +1,4 @@
-use crate::unit::UnitTrait;
+use crate::unit::terrain::UnitTerrainTrait;
 use engage::gamedata::{
     terrain::{self, TerrainData},
     unit::Unit,

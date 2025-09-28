@@ -1,9 +1,28 @@
-use crate::{class::ClassTrait, skill::flag, terrain::TerrainTrait, util::bitmask::BitMask};
-use engage::gamedata::{skill::SkillData, terrain::TerrainData, unit::Unit};
+use crate::{
+    class::ClassTrait,
+    item::{self, kind, use_type, ItemListTrait, ItemTrait},
+    skill::{
+        bad_states::{self, SILENCE},
+        flag, SkillTrait,
+    },
+    terrain::TerrainTrait,
+    util::bitmask::BitMask,
+};
+use engage::force::Force;
+use engage::gamedata::{
+    item::ItemData,
+    skill::{self, SkillData},
+    terrain::TerrainData,
+    unit::Unit,
+};
+use skyline::nn::friends::Profile_IsValid;
+use std::ops::Add;
 use unity::prelude::*;
 
 pub mod capability;
 pub mod status;
+pub mod terrain;
+
 const MALE_GENDER: i32 = 1;
 const FEMALE_GENDER: i32 = 2;
 pub trait UnitTrait {
@@ -15,11 +34,12 @@ pub trait UnitTrait {
     fn get_maxhp(&self) -> i32;
     fn is_fly(&self) -> bool;
     fn has_winged_shield(&self) -> bool;
-    fn is_terrain_valid(&self, terrain: &TerrainData) -> bool;
     fn get_center_cell(&self) -> Option<(i32, i32)>;
     fn can_be_moved(&self) -> bool;
     fn can_revive(&self) -> bool;
     fn auto_equip_item(&self);
+    fn calc_item_range(&self, item: &ItemData) -> (i32, i32);
+    fn is_enemy(&self) -> bool;
 }
 
 impl UnitTrait for Unit {
@@ -55,15 +75,6 @@ impl UnitTrait for Unit {
     fn has_winged_shield(&self) -> bool {
         self.has_sid(Il2CppString::new("SID_翼盾"))
     }
-    fn is_terrain_valid(&self, terrain: &TerrainData) -> bool {
-        if terrain.is_fly_enabled() {
-            true
-        } else if self.is_fly() {
-            self.has_winged_shield()
-        } else {
-            true
-        }
-    }
     fn get_center_cell(&self) -> Option<(i32, i32)> {
         let map_size = self.get_person().get_bmap_size();
         if map_size % 2 == 0 {
@@ -83,6 +94,46 @@ impl UnitTrait for Unit {
     }
     fn auto_equip_item(&self) {
         unsafe { unit_item_equip(self, None) };
+    }
+    fn calc_item_range(&self, item: &ItemData) -> (i32, i32) {
+        let mut i = item.range_i as i32;
+        let mut o = item.range_o as i32;
+        let mut extra = 0;
+        if item.kind == kind::TOOL {
+            i = 0
+        }
+        if let Some(mask) = self.mask_skill {
+            if item.kind == kind::ROD
+                && item.usetype == use_type::HEAL
+                && mask.flags.contains(flag::SELF_HEAL)
+            {
+                i = 0
+            }
+            for skl in mask.iter() {
+                if let Some(skl) = skl.get_skill() {
+                    let range_target = skl.get_range_target();
+                    if (range_target == 9 || item.kind == range_target as u32)
+                        && skl.is_condition_true(self, None)
+                    {
+                        i = i.min(skl.get_range_i());
+                        o = o.max(skl.get_range_o());
+                        extra = skl.get_range_add();
+                    }
+                }
+            }
+            if (mask.bad_states.contains(bad_states::SILENCE) && item.is_silence_target())
+                || mask.bad_states.contains(bad_states::SLEEP)
+            {
+                i = 0;
+                o = 0;
+            }
+        }
+        i = i.clamp(0, 255);
+        o = (o + extra).clamp(0, 255);
+        (i, o)
+    }
+    fn is_enemy(&self) -> bool {
+        self.force.map_or(0, |f| f.force_type) == 1
     }
 }
 
@@ -110,6 +161,22 @@ fn unit_can_revive(unit: &Unit, method: OptionalMethod) -> bool;
 #[skyline::from_offset(0x01A21530)]
 fn unit_item_equip(this: &Unit, method: OptionalMethod);
 
+#[skyline::hook(offset = 0x01A46500)]
+fn unit_calc_range(
+    unit: &Unit,
+    item: &ItemData,
+    range_i: &mut i32,
+    range_o: &mut i32,
+    _command_skill: Option<&SkillData>,
+    _method: OptionalMethod,
+) -> bool {
+    let (i, o) = unit.calc_item_range(item);
+    *range_i = i;
+    *range_o = o;
+    i <= o
+}
+
 pub fn install() {
     capability::install();
+    skyline::install_hook!(unit_calc_range);
 }

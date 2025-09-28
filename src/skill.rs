@@ -1,3 +1,4 @@
+pub mod bad_states;
 mod canto;
 pub mod flag;
 pub mod map;
@@ -11,6 +12,7 @@ pub trait SkillTrait {
     fn get_move_self(&self) -> i32;
     fn get_move_target(&self) -> i32;
     fn get_range_i(&self) -> i32;
+    fn get_range_add(&self) -> i32;
 }
 
 impl SkillTrait for SkillData {
@@ -25,6 +27,9 @@ impl SkillTrait for SkillData {
     }
     fn get_range_i(&self) -> i32 {
         unsafe { skill_get_range_i(self, None) }
+    }
+    fn get_range_add(&self) -> i32 {
+        unsafe { skill_get_range_add(self, None) }
     }
 }
 
@@ -44,6 +49,9 @@ fn skill_get_move_target(this: &SkillData, method: OptionalMethod) -> i32;
 
 #[skyline::from_offset(0x0248A170)]
 fn skill_get_range_i(this: &SkillData, method: OptionalMethod) -> i32;
+
+#[skyline::from_offset(0x0248A1B0)]
+fn skill_get_range_add(this: &SkillData, method: OptionalMethod) -> i32;
 
 pub fn install() {
     canto::install();

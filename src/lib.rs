@@ -1,6 +1,7 @@
 // Currently needed because we use these functionality, they'll be removable when the Rust language stabilizes them
 #![feature(lazy_cell, ptr_sub_ptr)]
 
+mod calculator;
 mod class;
 mod combat;
 mod item;
@@ -66,4 +67,5 @@ pub fn main() {
     item::install();
     misc::install();
     terrain::install();
+    calculator::install();
 }

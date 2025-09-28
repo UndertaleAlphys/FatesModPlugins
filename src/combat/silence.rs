@@ -52,8 +52,8 @@ pub fn interference_cal_score(ai: &mut AIInterferenceSimulator, method: Optional
 
 pub fn install() {
     skyline::install_hooks!(
-        silence_magic_weapon,
-        silence_engage_attack,
+        // silence_magic_weapon,
+        // silence_engage_attack,
         interference_cal_score
     );
 }

@@ -1,2 +1,3 @@
 pub const BEFORE_MOVE: i64 = 0x4000000;
+pub const SELF_HEAL: i64 = 0x8000000000;
 pub const MOVE_FLY: i64 = 0x2000000000000;
