@@ -28,7 +28,7 @@ impl CalculatorManagerTrait for CalculatorManager {
         command_name: impl AsRef<str>,
     ) -> Option<&'static mut CalculatorCommand> {
         unsafe {
-            calculator_manager_find_command(self, command_name.as_ref().to_string().into(), None)
+            calculator_manager_find_command(self, command_name.into(), None)
         }
     }
     fn clone_from_name(

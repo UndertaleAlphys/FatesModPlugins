@@ -21,18 +21,18 @@ pub fn add(manager: &mut CalculatorManager) {
         terrain_heal.assign_virtual_method("GetImpl", get_terrain_heal_command_unit as _);
         terrain_heal.assign_vtable(31, get_terrain_heal_command_battle_info as _);
         manager.add_command(terrain_heal);
-        //Guaranteed to exist
-        let foe_terrain_heal = terrain_heal.clone().unwrap().reverse();
-        manager.add_command(foe_terrain_heal);
+        if let Some(foe_terrain_heal) = terrain_heal.clone() {
+            manager.add_command(foe_terrain_heal.reverse());
+        }
     }
     if let Some(terrain_mov) = manager.clone_from_name(command::TERRAIN_AVO) {
         terrain_mov.assign_virtual_method("get_Name", get_terrain_mov_command_name as _);
         terrain_mov.assign_virtual_method("GetImpl", get_terrain_mov_command_unit as _);
         terrain_mov.assign_vtable(31, get_terrain_mov_command_battle_info as _);
         manager.add_command(terrain_mov);
-        //Guaranteed to exist
-        let foe_terrain_mov = terrain_mov.clone().unwrap().reverse();
-        manager.add_command(foe_terrain_mov);
+        if let Some(foe_terrain_mov) = terrain_mov.clone() {
+            manager.add_command(foe_terrain_mov.reverse());
+        }
     }
     if let Some(terrain_immune_break) = manager.clone_from_name(command::TERRAIN_AVO) {
         terrain_immune_break
@@ -41,9 +41,9 @@ pub fn add(manager: &mut CalculatorManager) {
             .assign_virtual_method("GetImpl", get_terrain_immune_break_command_unit as _);
         terrain_immune_break.assign_vtable(31, get_terrain_immune_break_command_battle_info as _);
         manager.add_command(terrain_immune_break);
-        //Guaranteed to exist
-        let foe_terrain_immune_break = terrain_immune_break.clone().unwrap().reverse();
-        manager.add_command(foe_terrain_immune_break);
+        if let Some(foe_terrain_immune_break) = terrain_immune_break.clone() {
+            manager.add_command(foe_terrain_immune_break.reverse());
+        }
     }
 }
 

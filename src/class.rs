@@ -1,5 +1,6 @@
 use crate::util::bitmask::BitMask;
-use engage::gamedata::{skill::SkillData, unit::Gender, Gamedata, JobData};
+use engage::gamedata::{skill::SkillData, unit::Gender, Gamedata, JobData, WeaponMask};
+use unity::prelude::OptionalMethod;
 
 pub mod change;
 pub mod flag;
@@ -19,6 +20,7 @@ pub trait ClassTrait {
     fn get_class_learn_skill_level(&self) -> i32;
     fn get_gender_lock(&self) -> Option<Gender>;
     fn is_fly(&self) -> bool;
+    fn get_max_weapon_level_with_aptitude(&self, kind: i32, aptitude: &WeaponMask) -> i32;
 }
 
 impl ClassTrait for JobData {
@@ -64,6 +66,9 @@ impl ClassTrait for JobData {
     fn is_fly(&self) -> bool {
         self.move_type == move_type::FLY
     }
+    fn get_max_weapon_level_with_aptitude(&self, kind: i32, aptitude: &WeaponMask) -> i32 {
+        unsafe { job_data_get_max_weapon_level_with_aptitude(self, kind, aptitude, None) }
+    }
 }
 
 pub trait GetClassGenderLock {
@@ -84,3 +89,11 @@ pub fn install() {
     change::install();
     skill::install();
 }
+
+#[skyline::from_offset(0x02056C30)]
+fn job_data_get_max_weapon_level_with_aptitude(
+    class: &JobData,
+    kind: i32,
+    aptitude: &WeaponMask,
+    method: OptionalMethod,
+) -> i32;

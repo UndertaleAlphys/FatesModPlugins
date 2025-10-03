@@ -1,3 +1,4 @@
+use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
     item::{self, kind, use_type, ItemListTrait, ItemTrait},
@@ -14,6 +15,7 @@ use engage::gamedata::{
     skill::{self, SkillData},
     terrain::TerrainData,
     unit::Unit,
+    WeaponMask,
 };
 use skyline::nn::friends::Profile_IsValid;
 use std::ops::Add;
@@ -40,6 +42,7 @@ pub trait UnitTrait {
     fn auto_equip_item(&self);
     fn calc_item_range(&self, item: &ItemData) -> (i32, i32);
     fn is_enemy(&self) -> bool;
+    fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32;
 }
 
 impl UnitTrait for Unit {
@@ -134,6 +137,28 @@ impl UnitTrait for Unit {
     }
     fn is_enemy(&self) -> bool {
         self.force.map_or(0, |f| f.force_type) == 1
+    }
+    fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32 {
+        let required_weapon_mask = 1 << kind;
+        let class_contains_weapon = WeaponMask::instantiate()
+            .map_or(0, |m| {
+                self.job
+                    .get_weapon_mask_with_selected(&m, self.selected_weapon_mask)
+                    .value
+            })
+            .contains(required_weapon_mask);
+        let class_weapon_level = if class_contains_weapon {
+            self.job
+                .get_max_weapon_level_with_aptitude(kind, self.aptitude)
+        } else {
+            0
+        };
+        if enhanced {
+            let skill_weapon_level = self.mask_skill.map_or(0, |m| m.get_weapon_level(kind));
+            class_weapon_level.max(skill_weapon_level)
+        } else {
+            class_weapon_level
+        }
     }
 }
 

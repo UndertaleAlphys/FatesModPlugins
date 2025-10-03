@@ -16,6 +16,16 @@ fn clear_god_unit(this: &Unit, method: OptionalMethod) {
     }
 }
 
+#[skyline::hook(offset = 0x01A0C050)]
+fn unit_get_weapon_level(
+    this: &Unit,
+    kind: i32,
+    cal_enhance: bool,
+    _method: OptionalMethod,
+) -> i32 {
+    this.get_weapon_level(kind, cal_enhance)
+}
+
 pub fn install() {
-    skyline::install_hook!(clear_god_unit);
+    skyline::install_hooks!(clear_god_unit, unit_get_weapon_level);
 }
