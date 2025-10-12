@@ -2,6 +2,7 @@ use engage::calculator::*;
 use unity::prelude::OptionalMethod;
 mod class;
 mod command;
+mod debuff;
 mod item;
 mod terrain;
 mod util;
@@ -12,6 +13,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     terrain::add(manager);
     item::add(manager);
     class::add(manager);
+    debuff::add(manager);
 }
 
 pub fn install() {

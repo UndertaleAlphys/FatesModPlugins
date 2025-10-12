@@ -1,27 +1,20 @@
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
-    item::{self, kind, use_type, ItemListTrait, ItemTrait},
+    item::{kind, use_type, ItemListTrait, ItemTrait},
     skill::{
-        bad_states::{self, SILENCE},
+        bad_states::{self},
         flag, SkillTrait,
     },
     terrain::TerrainTrait,
     util::bitmask::BitMask,
 };
-use engage::force::Force;
-use engage::gamedata::{
-    item::ItemData,
-    skill::{self, SkillData},
-    terrain::TerrainData,
-    unit::Unit,
-    WeaponMask,
-};
-use skyline::nn::friends::Profile_IsValid;
+use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
 use std::ops::Add;
 use unity::prelude::*;
 
 pub mod capability;
+mod debuff;
 pub mod status;
 pub mod terrain;
 
@@ -29,6 +22,9 @@ const MALE_GENDER: i32 = 1;
 const FEMALE_GENDER: i32 = 2;
 pub trait UnitTrait {
     fn add_skill(&self, skill: &SkillData);
+    fn remove_private_sid(&self, sid: impl AsRef<str>);
+    fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32;
+    fn set_debuff(&self, debuff_type: impl AsRef<str>, debuff: i32);
     fn get_engage_meter(&self) -> i32;
     fn get_engage_meter_limit(&self) -> i32;
     fn is_engage_meter_full(&self) -> bool;
@@ -50,6 +46,31 @@ pub trait UnitTrait {
 impl UnitTrait for Unit {
     fn add_skill(&self, skill: &SkillData) {
         unsafe { unit_add_skill(self, skill, None) }
+    }
+    fn remove_private_sid(&self, sid: impl AsRef<str>) {
+        unsafe { unit_remove_private_sid(self, sid.into(), None) }
+    }
+    fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32 {
+        let prefix = format!("SID_Debuff_{}_", debuff_type.as_ref());
+        for skill in self.private_skill.iter() {
+            let skill = skill.get_skill();
+            if let Some(skill) = skill {
+                let sid = skill.sid.to_string();
+                if let Some(debuff) = sid.strip_prefix(&prefix) {
+                    return debuff.parse::<i32>().unwrap_or(0).clamp(0, 100);
+                }
+            }
+        }
+        0
+    }
+    fn set_debuff(&self, debuff_type: impl AsRef<str>, debuff: i32) {
+        let old_debuff = self.get_debuff(&debuff_type);
+        if old_debuff > 0 {
+            unit_remove_debuff(self, &debuff_type, old_debuff);
+        }
+        if debuff > 0 {
+            unit_give_debuff(self, &debuff_type, debuff);
+        }
     }
     fn get_engage_meter(&self) -> i32 {
         unsafe { unit_get_engage_count(self, None) }
@@ -174,6 +195,9 @@ impl UnitTrait for Unit {
 #[skyline::from_offset(0x01A5D430)]
 fn unit_add_skill(unit: &Unit, skill_data: &SkillData, method: OptionalMethod);
 
+#[skyline::from_offset(0x01A38090)]
+fn unit_remove_private_sid(unit: &Unit, sid: &Il2CppString, method: OptionalMethod);
+
 #[unity::from_offset("App", "Unit", "get_EngageCount")]
 fn unit_get_engage_count(this: &Unit, method_info: OptionalMethod) -> i32;
 
@@ -214,6 +238,26 @@ fn unit_calc_range(
     *range_i = i;
     *range_o = o;
     i <= o
+}
+
+fn unit_remove_debuff(unit: &Unit, debuff_type: impl AsRef<str>, debuff: i32) {
+    let sid = format!(
+        "SID_Debuff_{}_{}",
+        debuff_type.as_ref(),
+        debuff.clamp(1, 100)
+    );
+    unit.remove_private_sid(sid);
+}
+
+fn unit_give_debuff(unit: &Unit, debuff_type: impl AsRef<str>, debuff: i32) {
+    let sid = format!(
+        "SID_Debuff_{}_{}",
+        debuff_type.as_ref(),
+        debuff.clamp(1, 100)
+    );
+    if let Some(skill) = SkillData::get(sid) {
+        unit.add_skill(skill);
+    }
 }
 
 pub fn install() {

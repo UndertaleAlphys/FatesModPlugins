@@ -8,10 +8,12 @@ mod item;
 mod map;
 mod menu;
 mod misc;
+mod script;
 mod skill;
 mod terrain;
 mod unit;
 mod util;
+
 use unity::prelude::*;
 /// This is called a proc(edural) macro. You use this to indicate that a function will be used as a hook.
 ///
@@ -68,4 +70,5 @@ pub fn main() {
     misc::install();
     terrain::install();
     calculator::install();
+    script::install();
 }
