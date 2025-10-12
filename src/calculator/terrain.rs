@@ -1,7 +1,8 @@
 use crate::calculator::command;
-use crate::calculator::util::{CalculatorCommandTrait, CalculatorManagerTrait};
+use crate::calculator::util::CalculatorManagerTrait;
 use crate::combat::battle_info::BattleInfoSideTrait;
 use crate::unit::terrain::UnitTerrainTrait;
+use crate::util::class::UnityClassTrait;
 use engage::{
     battle::BattleInfoSide,
     calculator::{CalculatorManager, GameCalculatorCommand},

@@ -43,6 +43,8 @@ pub trait UnitTrait {
     fn calc_item_range(&self, item: &ItemData) -> (i32, i32);
     fn is_enemy(&self) -> bool;
     fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32;
+    fn is_on_map(&self) -> bool;
+    fn is_in_play_area(&self) -> bool;
 }
 
 impl UnitTrait for Unit {
@@ -160,6 +162,13 @@ impl UnitTrait for Unit {
             class_weapon_level
         }
     }
+    fn is_on_map(&self) -> bool {
+        unsafe { unit_is_on_map(self, None) }
+    }
+
+    fn is_in_play_area(&self) -> bool {
+        unsafe { unit_is_in_play_area(self, None) }
+    }
 }
 
 #[skyline::from_offset(0x01A5D430)]
@@ -185,6 +194,12 @@ fn unit_can_revive(unit: &Unit, method: OptionalMethod) -> bool;
 
 #[skyline::from_offset(0x01A21530)]
 fn unit_item_equip(this: &Unit, method: OptionalMethod);
+
+#[skyline::from_offset(0x01A39D00)]
+fn unit_is_on_map(unit: &Unit, method: OptionalMethod) -> bool;
+
+#[skyline::from_offset(0x01A23CF0)]
+fn unit_is_in_play_area(unit: &Unit, method: OptionalMethod) -> bool;
 
 #[skyline::hook(offset = 0x01A46500)]
 fn unit_calc_range(

@@ -2,6 +2,7 @@ use crate::util::bitmask::BitMask;
 use engage::gamedata::{skill::SkillData, unit::Gender, Gamedata, JobData, WeaponMask};
 use unity::prelude::OptionalMethod;
 
+mod battle_style;
 pub mod change;
 pub mod flag;
 pub mod move_type;
@@ -21,6 +22,7 @@ pub trait ClassTrait {
     fn get_gender_lock(&self) -> Option<Gender>;
     fn is_fly(&self) -> bool;
     fn get_max_weapon_level_with_aptitude(&self, kind: i32, aptitude: &WeaponMask) -> i32;
+    fn get_battle_style(&self) -> i32;
 }
 
 impl ClassTrait for JobData {
@@ -69,6 +71,9 @@ impl ClassTrait for JobData {
     fn get_max_weapon_level_with_aptitude(&self, kind: i32, aptitude: &WeaponMask) -> i32 {
         unsafe { job_data_get_max_weapon_level_with_aptitude(self, kind, aptitude, None) }
     }
+    fn get_battle_style(&self) -> i32 {
+        unsafe { job_data_get_style(self, None) }
+    }
 }
 
 pub trait GetClassGenderLock {
@@ -97,3 +102,6 @@ fn job_data_get_max_weapon_level_with_aptitude(
     aptitude: &WeaponMask,
     method: OptionalMethod,
 ) -> i32;
+
+#[skyline::from_offset(0x02053F40)]
+fn job_data_get_style(class: &JobData, method: OptionalMethod) -> i32;

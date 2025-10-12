@@ -5,3 +5,4 @@ pub const TERRAIN_HEAL: &str = "TerrainHeal";
 pub const TERRAIN_MOV: &str = "TerrainMov";
 pub const TERRAIN_IMMUNE_BREAK: &str = "TerrainImmuneBreak";
 pub const INVENTORY_ITEM_COUNT: &str = "InventoryItemCount";
+pub const AROUND_CLASS_MOVE_TYPE_COUNT: &str = "AroundClassMoveTypeCount";

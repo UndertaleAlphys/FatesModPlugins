@@ -17,7 +17,7 @@ pub trait ItemTrait {
 
 impl ItemTrait for ItemData {
     fn is_engage_weapon(&self) -> bool {
-        return self.flag.value.contains(flag::ENGAGE_WEAPON);
+        self.flag.value.contains(flag::ENGAGE_WEAPON)
     }
     fn is_magic_weapon(&self) -> bool {
         let magic = self.kind == kind::MAGIC;
@@ -36,17 +36,17 @@ impl ItemTrait for ItemData {
     }
     fn get_heal_overrided(&self) -> Option<i32> {
         let item_skills = self.get_equip_skills();
-        let mut heal_overrided: Option<i32> = None;
+        let mut heal_override: Option<i32> = None;
         for skill in item_skills.iter() {
             if let Some(skill_data) = skill.get_skill() {
                 let sid = skill_data.sid.to_string();
                 if let Some(number) = sid.strip_prefix("SID_HealOverride_") {
-                    heal_overrided = number.parse::<i32>().ok();
+                    heal_override = number.parse::<i32>().ok();
                     break;
                 }
             }
         }
-        heal_overrided
+        heal_override
     }
 }
 

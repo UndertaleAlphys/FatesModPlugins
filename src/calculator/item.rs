@@ -1,5 +1,8 @@
 use crate::calculator::command;
-use crate::calculator::util::{CalculatorCommandTrait, CalculatorManagerTrait, ListFloats};
+use crate::calculator::util::{CalculatorManagerTrait, ListFloats};
+use crate::item::ItemTrait;
+use crate::unit::UnitTrait;
+use crate::util::class::UnityClassTrait;
 use engage::calculator::CalculatorManager;
 use engage::{calculator::GameCalculatorCommand, gamedata::unit::Unit};
 use unity::prelude::{Il2CppString, OptionalMethod};
@@ -29,7 +32,7 @@ fn inventory_item_count(
     _method_info: OptionalMethod,
 ) -> f32 {
     let type_list_length = args.size as usize;
-    if unit.is_none() || type_list_length == 0 {
+    if unit.is_none() || type_list_length < 1 {
         0.0
     } else {
         let mut cnt = 0;
@@ -40,7 +43,7 @@ fn inventory_item_count(
                 continue;
             }
             let item = item.unwrap();
-            if item.flags & 128 == 0 || unit.is_engaging() {
+            if !item.item.is_engage_weapon() || unit.is_engaging() {
                 for idx in 0..type_list_length {
                     let t = args.items[idx];
                     if t == item.item.kind as f32 {

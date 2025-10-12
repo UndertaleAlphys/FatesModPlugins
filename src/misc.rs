@@ -1,3 +1,4 @@
+mod difficulty_select;
 mod no_investment;
 mod no_skirmishes;
 mod no_well;
@@ -10,4 +11,5 @@ pub fn install() {
     no_skirmishes::install();
     patch_msg::install();
     save_header::install();
+    difficulty_select::install();
 }

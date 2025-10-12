@@ -1,3 +1,4 @@
+use crate::util::class::CanGetClass;
 use engage::calculator::{CalculatorCommand, CalculatorManager, GameCalculatorCommand};
 use unity::il2cpp::object::Array;
 use unity::il2cpp::{self};
@@ -27,9 +28,7 @@ impl CalculatorManagerTrait for CalculatorManager {
         &mut self,
         command_name: impl AsRef<str>,
     ) -> Option<&'static mut CalculatorCommand> {
-        unsafe {
-            calculator_manager_find_command(self, command_name.into(), None)
-        }
+        unsafe { calculator_manager_find_command(self, command_name.into(), None) }
     }
     fn clone_from_name(
         &mut self,
@@ -49,52 +48,21 @@ impl CalculatorManagerTrait for CalculatorManager {
     }
 }
 
-pub trait CalculatorCommandTrait {
-    fn assign_virtual_method(&mut self, method_name: impl AsRef<str>, method_pointer: *mut u8);
-    fn assign_vtable(&mut self, vtable_index: usize, method_pointer: *mut u8);
-    fn clone(&mut self) -> Option<&'static mut GameCalculatorCommand>;
-}
-
-trait CanGetClass {
-    fn class_mut(&mut self) -> &mut Il2CppClass;
-    fn class(&mut self) -> &Il2CppClass;
-}
-
 impl CanGetClass for CalculatorCommand {
-    fn class_mut(&mut self) -> &mut Il2CppClass {
+    fn get_class_mut_if_mod(&mut self) -> &mut Il2CppClass {
         self.get_class_mut()
     }
-    fn class(&mut self) -> &Il2CppClass {
+    fn get_class_if_mod(&mut self) -> &Il2CppClass {
         self.get_class()
     }
 }
 
 impl CanGetClass for GameCalculatorCommand {
-    fn class_mut(&mut self) -> &mut Il2CppClass {
+    fn get_class_mut_if_mod(&mut self) -> &mut Il2CppClass {
         self.get_class_mut()
     }
-    fn class(&mut self) -> &Il2CppClass {
+    fn get_class_if_mod(&mut self) -> &Il2CppClass {
         self.get_class()
-    }
-}
-
-impl<T> CalculatorCommandTrait for T
-where
-    T: CanGetClass,
-{
-    fn assign_virtual_method(&mut self, method_name: impl AsRef<str>, method_pointer: *mut u8) {
-        self.class_mut()
-            .get_virtual_method_mut(method_name)
-            .map(|method| method.method_ptr = method_pointer);
-    }
-    fn assign_vtable(&mut self, vtable_index: usize, method_pointer: *mut u8) {
-        self.class_mut().get_vtable_mut()[vtable_index].method_ptr = method_pointer;
-    }
-    fn clone(&mut self) -> Option<&'static mut GameCalculatorCommand> {
-        match il2cpp::instantiate_class::<GameCalculatorCommand>(self.class().clone()) {
-            Ok(cmd) => Some(cmd),
-            Err(_) => None,
-        }
     }
 }
 
