@@ -1,7 +1,9 @@
+use crate::skill::SkillArrayTrait;
 use crate::unit::capability;
 use engage::gamedata::unit::Unit;
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
+
 enum Multiple {
     M0_5,
     M1_0,

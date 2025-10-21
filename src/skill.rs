@@ -36,12 +36,25 @@ impl SkillTrait for SkillData {
 
 pub trait SkillArrayTrait {
     fn get_weapon_level(&self, kind: i32) -> i32;
+    fn contains_sid(&self, sid: impl AsRef<str>) -> bool;
 }
 
 impl SkillArrayTrait for SkillArray {
     fn get_weapon_level(&self, kind: i32) -> i32 {
         let weapon_levels = unsafe { skill_array_get_weapon_levels(self, None) };
         weapon_levels.levels[kind as usize] as i32
+    }
+    fn contains_sid(&self, sid: impl AsRef<str>) -> bool {
+        let mut result = false;
+        for skill in self.iter(){
+            if let Some(skill) = skill.get_skill(){
+                if skill.sid.to_string() == sid.as_ref(){
+                    result = true;
+                    break;
+                }
+            }
+        }
+        result
     }
 }
 

@@ -1,4 +1,5 @@
 use crate::unit::UnitTrait;
+use engage::gamedata::skill::SkillData;
 use engage::script::EventResultScriptCommand;
 use engage::{
     gamedata::{item::ItemData, unit::Unit, Gamedata},
@@ -94,6 +95,8 @@ impl ScriptIF {
         event.register_action("UnitSetBondLevel", set_god_unit_bond_level);
         event.register_function("UnitGetDebuff", unit_get_debuff);
         event.register_action("UnitSetDebuff", unit_set_debuff);
+        // event.register_action("UnitAddPrivateSkill", unit_add_private_skill);
+        // event.register_action("UnitRemovePrivateSkill", unit_remove_private_skill);
     }
 }
 
@@ -337,6 +340,38 @@ extern "C" fn unit_set_debuff(args: &Il2CppArray<DynValue>, _method: OptionalMet
     if unit.is_some() && debuff_type.is_some() {
         unit.unwrap()
             .set_debuff(debuff_type.unwrap().to_string(), value);
+    }
+}
+
+extern "C" fn unit_add_private_skill(args: &Il2CppArray<DynValue>, _method: OptionalMethod) {
+    let unit = args.try_get_unit(0);
+    let skill = args.try_get_string(1);
+    if unit.is_some() && skill.is_some() {
+        let unit = unit.unwrap();
+        let skill = skill.unwrap();
+        if let Some(skill) = SkillData::get(skill) {
+            unit.add_skill(skill);
+        } else {
+            println!("Skill not found");
+        }
+    } else {
+        println!("Index Error");
+    }
+}
+
+extern "C" fn unit_remove_private_skill(args: &Il2CppArray<DynValue>, _method: OptionalMethod) {
+    let unit = args.try_get_unit(0);
+    let skill = args.try_get_string(1);
+    if unit.is_some() && skill.is_some() {
+        let unit = unit.unwrap();
+        let skill = skill.unwrap();
+        if SkillData::get(skill).is_some() {
+            unit.remove_private_sid(skill.to_string());
+        } else {
+            println!("Skill not found");
+        }
+    } else {
+        println!("Index Error");
     }
 }
 

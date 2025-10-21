@@ -6,6 +6,7 @@ mod debuff;
 mod item;
 mod terrain;
 mod util;
+mod engage_turn;
 
 #[unity::hook("App", "UnitCalculator", "AddCommand")]
 pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMethod) {
@@ -14,6 +15,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     item::add(manager);
     class::add(manager);
     debuff::add(manager);
+    engage_turn::add(manager);
 }
 
 pub fn install() {

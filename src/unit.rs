@@ -1,3 +1,4 @@
+use crate::class::flag::NONE;
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
@@ -39,6 +40,8 @@ pub trait UnitTrait {
     fn calc_item_range(&self, item: &ItemData) -> (i32, i32);
     fn is_enemy(&self) -> bool;
     fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32;
+    fn set_engage_turn(&self, engage_turn: i32);
+    fn get_engage_turn_limit(&self) -> i32;
     fn is_on_map(&self) -> bool;
     fn is_in_play_area(&self) -> bool;
 }
@@ -183,6 +186,15 @@ impl UnitTrait for Unit {
             class_weapon_level
         }
     }
+
+    fn set_engage_turn(&self, engage_turn: i32) {
+        unsafe { unit_set_engage_turn(self, engage_turn, None) };
+    }
+
+    fn get_engage_turn_limit(&self) -> i32 {
+        unsafe { unit_get_engage_turn_limit(self, None) }
+    }
+
     fn is_on_map(&self) -> bool {
         unsafe { unit_is_on_map(self, None) }
     }
@@ -224,6 +236,12 @@ fn unit_is_on_map(unit: &Unit, method: OptionalMethod) -> bool;
 
 #[skyline::from_offset(0x01A23CF0)]
 fn unit_is_in_play_area(unit: &Unit, method: OptionalMethod) -> bool;
+
+#[skyline::from_offset(0x01A4F850)]
+fn unit_set_engage_turn(unit: &Unit, value: i32, method: OptionalMethod);
+
+#[skyline::from_offset(0x01A57D60)]
+fn unit_get_engage_turn_limit(unit: &Unit, method: OptionalMethod) -> i32;
 
 #[skyline::hook(offset = 0x01A46500)]
 fn unit_calc_range(

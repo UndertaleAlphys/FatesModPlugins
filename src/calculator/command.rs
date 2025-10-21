@@ -14,3 +14,5 @@ pub const DEBUFF_SPD: &str = "DebuffSpd";
 pub const DEBUFF_LCK: &str = "DebuffLck";
 pub const DEBUFF_DEF: &str = "DebuffDef";
 pub const DEBUFF_RES: &str = "DebuffRes";
+pub const ENGAGE_TURN: &str = "EngageTurn";
+pub const ENGAGE_TURN_LIMIT: &str = "EngageTurnLimit";
