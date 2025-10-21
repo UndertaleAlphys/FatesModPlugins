@@ -98,121 +98,119 @@ extern "C" fn get_debuff_res_command_name(
 
 extern "C" fn get_debuff_str_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Str") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Str") as f32)
 }
 
 extern "C" fn get_debuff_mag_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Mag") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Mag") as f32)
 }
 
 extern "C" fn get_debuff_dex_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Dex") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Dex") as f32)
 }
 
 extern "C" fn get_debuff_spd_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Spd") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Spd") as f32)
 }
 
 extern "C" fn get_debuff_lck_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Lck") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Lck") as f32)
 }
 
 extern "C" fn get_debuff_def_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Def") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Def") as f32)
 }
 
 extern "C" fn get_debuff_res_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    unit.get_debuff("Res") as f32
+    unit.map_or(0f32, |u| u.get_debuff("Res") as f32)
 }
 
 extern "C" fn set_debuff_str_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Str", value as i32);
+    unit.map(|u| u.set_debuff("Str", value as i32));
 }
 
 extern "C" fn set_debuff_mag_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Mag", value as i32);
+    unit.map(|u| u.set_debuff("Mag", value as i32));
 }
 
 extern "C" fn set_debuff_dex_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Dex", value as i32);
+    unit.map(|u| u.set_debuff("Dex", value as i32));
 }
 
 extern "C" fn set_debuff_spd_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Spd", value as i32);
+    unit.map(|u| u.set_debuff("Spd", value as i32));
 }
 
 extern "C" fn set_debuff_lck_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Lck", value as i32);
+    unit.map(|u| u.set_debuff("Lck", value as i32));
 }
 
 extern "C" fn set_debuff_def_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Def", value as i32);
+    unit.map(|u| u.set_debuff("Def", value as i32));
 }
 
 extern "C" fn set_debuff_res_unit(
     _this: &GameCalculatorCommand,
-    unit: &Unit,
+    unit: Option<&Unit>,
     value: f32,
     _method: OptionalMethod,
 ) {
-    unit.set_debuff("Res", value as i32);
+    unit.map(|u| u.set_debuff("Res", value as i32));
 }
-
-

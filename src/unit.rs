@@ -1,4 +1,6 @@
 use crate::class::flag::NONE;
+use crate::history::History;
+use crate::map::MapSkill;
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
@@ -67,6 +69,7 @@ impl UnitTrait for Unit {
         0
     }
     fn set_debuff(&self, debuff_type: impl AsRef<str>, debuff: i32) {
+        History::private_skill(self);
         let old_debuff = self.get_debuff(&debuff_type);
         if old_debuff > 0 {
             unit_remove_debuff(self, &debuff_type, old_debuff);
