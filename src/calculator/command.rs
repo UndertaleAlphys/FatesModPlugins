@@ -16,3 +16,4 @@ pub const DEBUFF_DEF: &str = "DebuffDef";
 pub const DEBUFF_RES: &str = "DebuffRes";
 pub const ENGAGE_TURN: &str = "EngageTurn";
 pub const ENGAGE_TURN_LIMIT: &str = "EngageTurnLimit";
+pub const RALLY_FLAG: &str = "RallyFlag";
