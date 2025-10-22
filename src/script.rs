@@ -271,12 +271,8 @@ extern "C" fn get_engage_turn(
 
 extern "C" fn set_engage_turn(args: &Il2CppArray<DynValue>, _method: OptionalMethod) {
     let unit: &Unit = args.try_get_unit(0).unwrap();
-    let turn = args.try_get_i32(1) as u8;
-
-    unsafe {
-        let unit_ptr = unit as *const Unit as *mut Unit;
-        (*unit_ptr).fields.engage_turn = turn;
-    }
+    let turn = args.try_get_i32(1);
+    unit.set_engage_turn(turn);
 }
 
 extern "C" fn get_unit_status(

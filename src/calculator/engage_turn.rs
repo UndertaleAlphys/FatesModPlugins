@@ -66,7 +66,6 @@ extern "C" fn set_engage_turn_unit(
     _method: OptionalMethod,
 ) {
     if let Some(unit) = unit {
-        History::engage_turn(unit);
-        unit.set_engage_turn((value as i32).clamp(0, unit.get_engage_turn_limit()));
+        unit.set_engage_turn(value as i32);
     }
 }

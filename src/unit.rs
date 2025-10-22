@@ -1,6 +1,4 @@
-use crate::class::flag::NONE;
 use crate::history::History;
-use crate::map::MapSkill;
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
@@ -13,6 +11,7 @@ use crate::{
     util::bitmask::BitMask,
 };
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
+use engage::unitpool::UnitPool;
 use std::ops::Add;
 use unity::prelude::*;
 
@@ -44,6 +43,7 @@ pub trait UnitTrait {
     fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32;
     fn set_engage_turn(&self, engage_turn: i32);
     fn get_engage_turn_limit(&self) -> i32;
+    fn get_engage_link_unit(&self) -> Option<&Unit>;
     fn is_on_map(&self) -> bool;
     fn is_in_play_area(&self) -> bool;
 }
@@ -191,11 +191,27 @@ impl UnitTrait for Unit {
     }
 
     fn set_engage_turn(&self, engage_turn: i32) {
-        unsafe { unit_set_engage_turn(self, engage_turn, None) };
+        let engage_turn = engage_turn.clamp(0, self.get_engage_turn_limit()) as u8;
+        if self.is_engaging() {
+            if let Some(mut_self) = UnitPool::get_by_index(self.index as i32) {
+                History::engage_turn(self);
+                mut_self.engage_turn = engage_turn;
+            }
+            if let Some(link) = self.get_engage_link_unit() {
+                if let Some(mut_link) = UnitPool::get_by_index(link.index as i32) {
+                    History::engage_turn(link);
+                    mut_link.engage_turn = engage_turn;
+                }
+            }
+        }
     }
 
     fn get_engage_turn_limit(&self) -> i32 {
         unsafe { unit_get_engage_turn_limit(self, None) }
+    }
+
+    fn get_engage_link_unit(&self) -> Option<&Unit> {
+        unsafe { unit_get_engage_link_unit(self, None) }
     }
 
     fn is_on_map(&self) -> bool {
@@ -240,11 +256,16 @@ fn unit_is_on_map(unit: &Unit, method: OptionalMethod) -> bool;
 #[skyline::from_offset(0x01A23CF0)]
 fn unit_is_in_play_area(unit: &Unit, method: OptionalMethod) -> bool;
 
-#[skyline::from_offset(0x01A4F850)]
-fn unit_set_engage_turn(unit: &Unit, value: i32, method: OptionalMethod);
+#[skyline::hook(offset = 0x01A4F850)]
+fn unit_set_engage_turn(unit: &Unit, value: i32, _method: OptionalMethod) {
+    unit.set_engage_turn(value);
+}
 
 #[skyline::from_offset(0x01A57D60)]
 fn unit_get_engage_turn_limit(unit: &Unit, method: OptionalMethod) -> i32;
+
+#[skyline::from_offset(0x01A274D0)]
+fn unit_get_engage_link_unit(unit: &Unit, method: OptionalMethod) -> Option<&Unit>;
 
 #[skyline::hook(offset = 0x01A46500)]
 fn unit_calc_range(
@@ -283,5 +304,5 @@ fn unit_give_debuff(unit: &Unit, debuff_type: impl AsRef<str>, debuff: i32) {
 
 pub fn install() {
     capability::install();
-    skyline::install_hook!(unit_calc_range);
+    skyline::install_hooks!(unit_calc_range, unit_set_engage_turn);
 }
