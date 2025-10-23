@@ -1,0 +1,10 @@
+C:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\target\aarch64-skyline-switch\release\deps\libmemoffset-fbe9b4e204f2f027.rmeta: C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\lib.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\raw_field.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\offset_of.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\span_of.rs
+
+C:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\target\aarch64-skyline-switch\release\deps\libmemoffset-fbe9b4e204f2f027.rlib: C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\lib.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\raw_field.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\offset_of.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\span_of.rs
+
+C:\Users\Mercedes\Documents\VSCode Projects\IFmodPlugins\target\aarch64-skyline-switch\release\deps\memoffset-fbe9b4e204f2f027.d: C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\lib.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\raw_field.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\offset_of.rs C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\span_of.rs
+
+C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\lib.rs:
+C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\raw_field.rs:
+C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\offset_of.rs:
+C:\Users\Mercedes\.cargo\registry\src\index.crates.io-6f17d22bba15001f\memoffset-0.8.0\src\span_of.rs:

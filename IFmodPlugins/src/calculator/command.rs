@@ -1,0 +1,12 @@
+pub const HP: &str = "HP";
+pub const TERRAIN_AVO: &str = "地形回避";
+pub const TERRAIN_DEF: &str = "地形防御";
+pub const MALE_FEMALE_COUNTS: &str = "周囲の隣接男女数";
+pub const TERRAIN_HEAL: &str = "TerrainHeal";
+pub const TERRAIN_MOV: &str = "TerrainMov";
+pub const TERRAIN_IMMUNE_BREAK: &str = "TerrainImmuneBreak";
+pub const INVENTORY_ITEM_COUNT: &str = "InventoryItemCount";
+pub const AROUND_CLASS_MOVE_TYPE_COUNT: &str = "AroundClassMoveTypeCount";
+pub const ENGAGE_TURN: &str = "EngageTurn";
+pub const ENGAGE_TURN_LIMIT: &str = "EngageTurnLimit";
+pub const RALLY_FLAG: &str = "RallyFlag";
