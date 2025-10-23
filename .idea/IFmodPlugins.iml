@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/IFmodPlugins/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/IFmodPluginsMain/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/function/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/IFmodPlugins/.VSCodeCounter" />
       <excludeFolder url="file://$MODULE_DIR$/IFmodPlugins/target" />
       <excludeFolder url="file://$MODULE_DIR$/IFmodPluginsMain/target" />
