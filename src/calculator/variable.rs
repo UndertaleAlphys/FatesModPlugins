@@ -59,7 +59,8 @@ pub fn add(manager: &mut CalculatorManager) {
         non_stackable_new_debuff_spd,
         non_stackable_new_debuff_lck,
         non_stackable_new_debuff_def,
-        non_stackable_new_debuff_res
+        non_stackable_new_debuff_res,
+        debuff_animation_flag
     ]);
     for index in 0..name.len() {
         if let Some(debuff_c) = manager.clone_from_name(command::HP) {
@@ -766,5 +767,38 @@ extern "C" fn set_non_stackable_new_debuff_res_unit(
     _method: OptionalMethod,
 ) {
     unit.map(|u| u.set_variable("NonStackableNewDebuffRes", value as i32));
+}
+
+extern "C" fn get_debuff_animation_flag_command_name(
+    _this: &GameCalculatorCommand,
+    _method: OptionalMethod,
+) -> &'static Il2CppString {
+    Il2CppString::new("DebuffAnimationFlag")
+}
+
+extern "C" fn get_debuff_animation_flag_unit(
+    _this: &GameCalculatorCommand,
+    unit: Option<&Unit>,
+    _method: OptionalMethod,
+) -> f32 {
+    unit.map_or(0f32, |u| u.get_variable("DebuffAnimationFlag") as f32)
+}
+
+extern "C" fn get_debuff_animation_flag_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    _method: OptionalMethod,
+) -> f32 {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map_or(0f32, |u| u.get_variable("DebuffAnimationFlag") as f32)
+}
+
+extern "C" fn set_debuff_animation_flag_unit(
+    _this: &GameCalculatorCommand,
+    unit: Option<&Unit>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    unit.map(|u| u.set_variable("DebuffAnimationFlag", value as i32));
 }
 
