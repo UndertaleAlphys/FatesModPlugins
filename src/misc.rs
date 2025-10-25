@@ -4,6 +4,7 @@ mod no_skirmishes;
 mod no_well;
 mod patch_msg;
 mod save_header;
+mod play_damage;
 
 pub fn install() {
     no_well::install();
@@ -12,4 +13,5 @@ pub fn install() {
     patch_msg::install();
     save_header::install();
     difficulty_select::install();
+    play_damage::install();
 }
