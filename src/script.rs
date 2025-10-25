@@ -1,6 +1,10 @@
+use crate::class::move_type;
+use crate::history::History;
 use crate::unit::UnitTrait;
 use engage::gamedata::skill::SkillData;
+use engage::map::image::MapImage;
 use engage::script::EventResultScriptCommand;
+use engage::util::get_instance;
 use engage::{
     gamedata::{item::ItemData, unit::Unit, Gamedata},
     script::{DynValue, EventScript, EventScriptCommand, ScriptUtils},
@@ -97,6 +101,8 @@ impl ScriptIF {
         event.register_action("UnitSetDebuff", unit_set_debuff);
         // event.register_action("UnitAddPrivateSkill", unit_add_private_skill);
         // event.register_action("UnitRemovePrivateSkill", unit_remove_private_skill);
+        event.register_action("M023SkySeal", m023_sky_seal);
+        event.register_action("M023SkyBless", m023_sky_bless);
     }
 }
 
@@ -368,6 +374,48 @@ extern "C" fn unit_remove_private_skill(args: &Il2CppArray<&DynValue>, _method: 
         }
     } else {
         println!("Index Error");
+    }
+}
+
+extern "C" fn m023_sky_seal(_args: &Il2CppArray<&DynValue>, _method: OptionalMethod) {
+    m023_sky_effect(m023_decrease_mov, m023_increase_mov);
+}
+
+extern "C" fn m023_sky_bless(_args: &Il2CppArray<&DynValue>, _method: OptionalMethod) {
+    m023_sky_effect(m023_increase_mov, m023_decrease_mov);
+}
+
+fn m023_decrease_mov(u: &Unit) {
+    u.remove_private_sid("SID_移動半分に増加_効果_M023");
+    u.add_sid("SID_移動半減_効果_M023");
+}
+
+fn m023_increase_mov(u: &Unit) {
+    u.remove_private_sid("SID_移動半減_効果_M023");
+    u.add_sid("SID_移動半分に増加_効果_M023");
+}
+
+fn m023_sky_effect<F, G>(fly_effect: F, ground_effect: G)
+where
+    F: Fn(&Unit),
+    G: Fn(&Unit),
+{
+    let image: &MapImage = get_instance::<MapImage>();
+    let x_min = image.playarea_x1.min(image.playarea_x2);
+    let x_max = image.playarea_x1.max(image.playarea_x2);
+    let z_min = image.playarea_z1.min(image.playarea_z2);
+    let z_max = image.playarea_z1.max(image.playarea_z2);
+    for x in x_min..=x_max {
+        for z in z_min..=z_max {
+            if let Some(unit) = image.get_target_unit(x, z) {
+                History::private_skill(unit);
+                if unit.get_job().move_type == move_type::FLY {
+                    fly_effect(unit);
+                } else {
+                    ground_effect(unit);
+                }
+            }
+        }
     }
 }
 

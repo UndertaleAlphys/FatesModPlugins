@@ -98,9 +98,11 @@ fn commit_mag(ctx: &mut InlineCtx) {
 fn commit_mov(ctx: &mut InlineCtx) {
     let this: &Unit = unsafe { &*(*ctx.registers[19].x.as_ref() as *const Unit) };
     let old_enhance_mov = unsafe { *ctx.registers[0].w.as_ref() } as i32;
-    let less_mov = this.has_sid(Il2CppString::new("SID_移動半減_効果"));
-    let more_mov = this.has_sid(Il2CppString::new("SID_移動半分に増加_効果"));
-    let multiple = if less_mov ^ more_mov {
+    let less_mov =
+        this.has_sid("SID_移動半減_効果".into()) || this.has_sid("SID_移動半減_効果_M023".into());
+    let more_mov = this.has_sid("SID_移動半分に増加_効果".into())
+        || this.has_sid("SID_移動半分に増加_効果_M023".into());
+    let multiple = if less_mov != more_mov {
         if less_mov {
             Multiple::M0_5
         } else {
