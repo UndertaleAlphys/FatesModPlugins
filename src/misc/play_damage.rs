@@ -16,10 +16,14 @@ fn calculator_set_hp_unit(
         let mut value = value as i32;
         let mut play_damage = unit.get_hp() - value;
         if play_damage != 0 {
-            if play_damage > 0 && unit.has_sid("SID_毒無効".into()) {
-                play_damage = 0;
-                value = unit.get_hp();
+            if play_damage > 0 {
+                if unit.has_sid("SID_毒無効".into()) {
+                    play_damage = 0;
+                } else if unit.has_sid("SID_毒半減".into()) {
+                    play_damage = play_damage / 2;
+                };
             }
+            value = unit.get_hp() - play_damage;
             unsafe { unit_play_set_damage(unit, play_damage, false, false, None) };
             value = value.min(max_hp).clamp(1, u8::MAX as i32);
             unit.set_hp(value);
