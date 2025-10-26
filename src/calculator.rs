@@ -1,13 +1,14 @@
 use engage::calculator::*;
 use unity::prelude::OptionalMethod;
+mod buff_eirike;
 mod class;
 mod command;
-mod variable;
 mod engage_turn;
 mod item;
 mod rally_flag;
 mod terrain;
 mod util;
+mod variable;
 
 #[unity::hook("App", "UnitCalculator", "AddCommand")]
 pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMethod) {
@@ -18,6 +19,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     variable::add(manager);
     engage_turn::add(manager);
     rally_flag::add(manager);
+    buff_eirike::add(manager);
 }
 
 pub fn install() {

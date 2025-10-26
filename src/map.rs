@@ -67,11 +67,11 @@ impl MapDeployMoveImage {
 }
 
 pub trait MapMindTrait {
-    fn get_unit(&self) -> &Unit;
+    fn get_unit(&self) -> Option<&Unit>;
 }
 
 impl MapMindTrait for MapMind {
-    fn get_unit(&self) -> &Unit {
+    fn get_unit(&self) -> Option<&Unit> {
         unsafe { map_mind_get_unit(self, None) }
     }
 }
@@ -145,7 +145,7 @@ impl MapImageTerrainTrait for MapImageTerrain {
 fn map_can_enter_terrain(unit: &Unit, x: i32, z: i32, method: OptionalMethod) -> bool;
 
 #[skyline::from_offset(0x01DEE2B0)]
-fn map_mind_get_unit(this: &MapMind, method: OptionalMethod) -> &Unit;
+fn map_mind_get_unit(this: &MapMind, method: OptionalMethod) -> Option<&Unit>;
 
 #[skyline::from_offset(0x01F4EA60)]
 fn map_skill_is_sight_out(unit: &Unit, x: i32, z: i32, method: OptionalMethod) -> bool;

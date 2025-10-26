@@ -42,14 +42,13 @@ fn around_class_move_type(
         return 0.0;
     }
     let mut cnt = 0;
-    let center = (unit.get_x(), unit.get_z());
     let range = args.items[0] as i32;
     let battle_style = args.items[1..]
         .iter()
         .map(|f| *f as i32)
         .collect::<Vec<i32>>();
     let image: &MapImage = get_instance::<MapImage>();
-    for (x, z) in iter_range(range, center) {
+    for (x, z) in unit.iter_range(range) {
         if let Some(around_unit) = image.get_target_unit(x, z) {
             if around_unit.is_enemy() == unit.is_enemy() {
                 if battle_style.contains(&(around_unit.get_job().get_battle_style())) {
@@ -59,33 +58,4 @@ fn around_class_move_type(
         }
     }
     cnt as f32
-}
-
-fn iter_range(range: i32, center: (i32, i32)) -> Vec<(i32, i32)> {
-    let mut result = Vec::new();
-    if range > 0 {
-        let (center_x, center_z) = center;
-        let start_x = center_x;
-        let start_z = center_z - range;
-        for i in 0..range + 1 {
-            for j in 0..range + 1 {
-                let point = (start_x - i + j, start_z + i + j);
-                if point != center {
-                    result.push(point);
-                }
-            }
-        }
-
-        let start_x = center_x;
-        let start_z = center_z - range + 1;
-        for i in 0..range {
-            for j in 0..range {
-                let point = (start_x - i + j, start_z + i + j);
-                if point != center {
-                    result.push(point);
-                }
-            }
-        }
-    }
-    result
 }

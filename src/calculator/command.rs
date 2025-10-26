@@ -10,3 +10,5 @@ pub const AROUND_CLASS_MOVE_TYPE_COUNT: &str = "AroundClassMoveTypeCount";
 pub const ENGAGE_TURN: &str = "EngageTurn";
 pub const ENGAGE_TURN_LIMIT: &str = "EngageTurnLimit";
 pub const RALLY_FLAG: &str = "RallyFlag";
+pub const AROUND_BUFF_GENTLE_WIND: &str = "AroundBuffGentleWind";
+pub const AROUND_BUFF_BRAVE_SKY: &str = "AroundBuffBraveSky";

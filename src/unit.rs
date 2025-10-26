@@ -48,6 +48,7 @@ pub trait UnitTrait {
     fn get_engage_link_unit(&self) -> Option<&Unit>;
     fn is_on_map(&self) -> bool;
     fn is_in_play_area(&self) -> bool;
+    fn iter_range(&self, range: i32) -> Vec<(i32, i32)>;
 }
 
 impl UnitTrait for Unit {
@@ -256,6 +257,35 @@ impl UnitTrait for Unit {
 
     fn is_in_play_area(&self) -> bool {
         unsafe { unit_is_in_play_area(self, None) }
+    }
+    fn iter_range(&self, range: i32) -> Vec<(i32, i32)> {
+        let mut result = Vec::new();
+        if range > 0 && self.is_on_map() && self.is_in_play_area() {
+            let center = (self.get_x(), self.get_z());
+            let (center_x, center_z) = center;
+            let start_x = center_x;
+            let start_z = center_z - range;
+            for i in 0..range + 1 {
+                for j in 0..range + 1 {
+                    let point = (start_x - i + j, start_z + i + j);
+                    if point != center {
+                        result.push(point);
+                    }
+                }
+            }
+
+            let start_x = center_x;
+            let start_z = center_z - range + 1;
+            for i in 0..range {
+                for j in 0..range {
+                    let point = (start_x - i + j, start_z + i + j);
+                    if point != center {
+                        result.push(point);
+                    }
+                }
+            }
+        }
+        result
     }
 }
 
