@@ -1,9 +1,10 @@
 use crate::skill::SkillArrayTrait;
-use crate::unit::capability;
+use crate::unit::{capability, UnitTrait};
 use engage::gamedata::unit::Unit;
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
 
+#[derive(Debug, Copy, Clone)]
 enum Multiple {
     M0_5,
     M1_0,
@@ -66,7 +67,7 @@ fn commit_max_hp(ctx: &mut InlineCtx) {
 fn commit_str(ctx: &mut InlineCtx) {
     let this: &Unit = unsafe { &*(*ctx.registers[19].x.as_ref() as *const Unit) };
     let old_enhance_str = unsafe { *ctx.registers[0].w.as_ref() } as i32;
-    let multiple = if this.has_sid(Il2CppString::new("SID_力半減_効果")) {
+    let multiple = if this.has_sid("SID_StrHalvedEffect".into()) {
         Multiple::M0_5
     } else {
         Multiple::M1_0
@@ -82,7 +83,7 @@ fn commit_str(ctx: &mut InlineCtx) {
 fn commit_mag(ctx: &mut InlineCtx) {
     let this: &Unit = unsafe { &*(*ctx.registers[19].x.as_ref() as *const Unit) };
     let old_enhance_mag = unsafe { *ctx.registers[0].w.as_ref() } as i32;
-    let multiple = if this.has_sid(Il2CppString::new("SID_魔半減_効果")) {
+    let multiple = if this.has_sid("SID_MagHalvedEffect".into()) {
         Multiple::M0_5
     } else {
         Multiple::M1_0

@@ -4,6 +4,7 @@
 mod calculator;
 mod class;
 mod combat;
+mod history;
 mod item;
 mod map;
 mod menu;
@@ -13,7 +14,7 @@ mod skill;
 mod terrain;
 mod unit;
 mod util;
-mod history;
+mod verify;
 
 use unity::prelude::*;
 /// This is called a proc(edural) macro. You use this to indicate that a function will be used as a hook.
@@ -63,6 +64,11 @@ pub fn main() {
     // Do keep in mind that hooks cannot currently be uninstalled, so proceed accordingly.
     //
     // A ``install_hooks!`` variant exists to let you install multiple hooks at once if separated by a comma.
+    let verify_result = verify::verify();
+    if let Err(ref msg) = verify_result {
+        println!("{}", msg);
+    }
+    verify_result.unwrap();
     class::install();
     combat::install();
     skill::install();

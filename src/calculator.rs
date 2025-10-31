@@ -4,6 +4,7 @@ mod buff_eirike;
 mod class;
 mod command;
 mod engage_turn;
+mod half_debuff_set;
 mod item;
 mod rally_flag;
 mod terrain;
@@ -20,6 +21,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     engage_turn::add(manager);
     rally_flag::add(manager);
     buff_eirike::add(manager);
+    half_debuff_set::add(manager);
 }
 
 pub fn install() {

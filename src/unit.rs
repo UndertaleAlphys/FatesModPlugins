@@ -25,6 +25,7 @@ pub trait UnitTrait {
     fn add_skill(&self, skill: &SkillData);
     fn add_sid(&self, sid: impl AsRef<str>);
     fn remove_private_sid(&self, sid: impl AsRef<str>);
+    fn has_whole_sid(&self, sid: impl AsRef<str>) -> bool;
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32;
     fn set_variable(&self, variable_name: impl AsRef<str>, value: i32);
     fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32;
@@ -63,6 +64,13 @@ impl UnitTrait for Unit {
     }
     fn remove_private_sid(&self, sid: impl AsRef<str>) {
         unsafe { unit_remove_private_sid(self, sid.into(), None) }
+    }
+
+    fn has_whole_sid(&self, sid: impl AsRef<str>) -> bool {
+        self.has_sid(sid.as_ref().into())
+            || self.private_skill.contains_sid(sid.as_ref())
+            || self.receive_skill.contains_sid(sid.as_ref())
+            || self.supported_skill.contains_sid(sid.as_ref())
     }
 
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32 {

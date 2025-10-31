@@ -12,3 +12,4 @@ pub const ENGAGE_TURN_LIMIT: &str = "EngageTurnLimit";
 pub const RALLY_FLAG: &str = "RallyFlag";
 pub const AROUND_BUFF_GENTLE_WIND: &str = "AroundBuffGentleWind";
 pub const AROUND_BUFF_BRAVE_SKY: &str = "AroundBuffBraveSky";
+pub const HALF_DEBUFF_SET: &str = "HalfDebuffSet";

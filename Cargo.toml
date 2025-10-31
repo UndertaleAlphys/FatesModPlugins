@@ -15,6 +15,9 @@ skyline = { git = "https://github.com/Raytwo/skyline-rs", branch = "preview" } #
 engage = { git = "https://github.com/DivineDragonFanClub/engage" } # Contains a set of functions and utilities to call the game's code.
 unity = { git = "https://github.com/DivineDragonFanClub/unity" } # Utilities to talk with Unity internals. You usually wouldn't need it unless what you want isn't in the engage crate.
 paste = "1.0"
+sha2 = "0.10"
+walkdir = "2"
+bincode = "1"
 
 [profile.dev]
 panic = "abort"
