@@ -1,10 +1,11 @@
 mod difficulty_select;
+mod emblem_buff_display;
 mod no_investment;
 mod no_skirmishes;
 mod no_well;
 mod patch_msg;
-mod save_header;
 mod play_damage;
+mod save_header;
 
 pub fn install() {
     no_well::install();
@@ -14,4 +15,5 @@ pub fn install() {
     save_header::install();
     difficulty_select::install();
     play_damage::install();
+    emblem_buff_display::install();
 }
