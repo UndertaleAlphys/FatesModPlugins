@@ -1,5 +1,3 @@
-use crate::class::flag::NONE;
-use crate::map::Map;
 use crate::util::bitmask::BitMask;
 use engage::gamedata::unit::Unit;
 use engage::gamedata::GodData;

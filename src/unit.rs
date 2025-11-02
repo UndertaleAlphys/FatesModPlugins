@@ -13,6 +13,7 @@ use crate::{
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
 use engage::unitpool::UnitPool;
 use std::ops::Add;
+use std::sync::Mutex;
 use unity::prelude::*;
 
 pub mod capability;
@@ -50,6 +51,7 @@ pub trait UnitTrait {
     fn is_on_map(&self) -> bool;
     fn is_in_play_area(&self) -> bool;
     fn iter_range(&self, range: i32) -> Vec<(i32, i32)>;
+    fn get_set_engage_meter(&self, value: Option<i32>) -> i32;
 }
 
 impl UnitTrait for Unit {
@@ -295,6 +297,19 @@ impl UnitTrait for Unit {
         }
         result
     }
+    fn get_set_engage_meter(&self, value: Option<i32>) -> i32 {
+        static LOCK: Mutex<()> = Mutex::new(());
+        let _guard = LOCK.lock().unwrap();
+        if let Some(value) = value {
+            let value = value.clamp(0, self.get_engage_meter_limit());
+            unsafe {
+                unit_set_engage_count(self, value, None);
+                value
+            }
+        } else {
+            unsafe { unit_get_engage_count(self, None) }
+        }
+    }
 }
 
 #[skyline::from_offset(0x01A5D430)]
@@ -302,6 +317,10 @@ fn unit_add_skill(unit: &Unit, skill_data: &SkillData, method: OptionalMethod);
 
 #[skyline::from_offset(0x01A38090)]
 fn unit_remove_private_sid(unit: &Unit, sid: &Il2CppString, method: OptionalMethod);
+
+// #[unity::from_offset("App", "Unit", "set_EngageCount")]
+#[skyline::from_offset(0x01A264A0)]
+fn unit_set_engage_count(this: &Unit, value: i32, method_info: OptionalMethod);
 
 #[unity::from_offset("App", "Unit", "get_EngageCount")]
 fn unit_get_engage_count(this: &Unit, method_info: OptionalMethod) -> i32;

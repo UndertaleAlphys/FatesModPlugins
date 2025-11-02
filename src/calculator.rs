@@ -3,6 +3,7 @@ use unity::prelude::OptionalMethod;
 mod buff_eirike;
 mod class;
 mod command;
+mod engage_count;
 mod engage_turn;
 mod half_debuff_set;
 mod item;
@@ -22,6 +23,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     rally_flag::add(manager);
     buff_eirike::add(manager);
     half_debuff_set::add(manager);
+    engage_count::add(manager);
 }
 
 pub fn install() {
