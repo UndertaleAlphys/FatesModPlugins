@@ -12,7 +12,7 @@ pub trait ItemTrait {
     fn is_magic_weapon(&self) -> bool;
     fn is_silence_target(&self) -> bool;
     fn is_tiki_blessing(&self) -> bool;
-    fn get_heal_overrided(&self) -> Option<i32>;
+    fn get_heal_overridden(&self) -> Option<i32>;
 }
 
 impl ItemTrait for ItemData {
@@ -34,7 +34,7 @@ impl ItemTrait for ItemData {
         let skills = self.get_equip_skills();
         skills.find_sid(Il2CppString::new("SID_祝福")).is_some()
     }
-    fn get_heal_overrided(&self) -> Option<i32> {
+    fn get_heal_overridden(&self) -> Option<i32> {
         let item_skills = self.get_equip_skills();
         let mut heal_override: Option<i32> = None;
         for skill in item_skills.iter() {

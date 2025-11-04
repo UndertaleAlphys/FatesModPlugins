@@ -26,17 +26,6 @@ pub trait ClassTrait {
 }
 
 impl ClassTrait for JobData {
-    fn has_class_skill(&self) -> bool {
-        if let Some(skill_iid) = self.learn_skill {
-            if let Some(_) = SkillData::get(skill_iid) {
-                true
-            } else {
-                false
-            }
-        } else {
-            false
-        }
-    }
     fn get_class_rank(&self) -> ClassRank {
         if self.is_high() {
             ClassRank::Advanced
@@ -46,6 +35,17 @@ impl ClassTrait for JobData {
             } else {
                 ClassRank::Special
             }
+        }
+    }
+    fn has_class_skill(&self) -> bool {
+        if let Some(skill_iid) = self.learn_skill {
+            if let Some(_) = SkillData::get(skill_iid) {
+                true
+            } else {
+                false
+            }
+        } else {
+            false
         }
     }
     fn get_class_learn_skill_level(&self) -> i32 {

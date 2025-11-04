@@ -13,7 +13,6 @@ use crate::{
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
 use engage::unitpool::UnitPool;
 use std::ops::Add;
-use std::sync::Mutex;
 use unity::prelude::*;
 
 pub mod capability;
@@ -32,6 +31,7 @@ pub trait UnitTrait {
     fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32;
     fn set_debuff(&self, debuff_type: impl AsRef<str>, debuff: i32);
     fn get_engage_meter(&self) -> i32;
+    fn set_engage_meter(&self, meter: i32);
     fn get_engage_meter_limit(&self) -> i32;
     fn is_engage_meter_full(&self) -> bool;
     fn get_hp(&self) -> i32;
@@ -51,7 +51,6 @@ pub trait UnitTrait {
     fn is_on_map(&self) -> bool;
     fn is_in_play_area(&self) -> bool;
     fn iter_range(&self, range: i32) -> Vec<(i32, i32)>;
-    fn get_set_engage_meter(&self, value: Option<i32>) -> i32;
 }
 
 impl UnitTrait for Unit {
@@ -127,6 +126,12 @@ impl UnitTrait for Unit {
     }
     fn get_engage_meter(&self) -> i32 {
         unsafe { unit_get_engage_count(self, None) }
+    }
+    fn set_engage_meter(&self, meter: i32) {
+        let meter = meter.clamp(0, self.get_engage_meter_limit());
+        unsafe {
+            unit_set_engage_count(self, meter, None);
+        }
     }
     fn get_engage_meter_limit(&self) -> i32 {
         unsafe { unit_get_engage_count_limit(self, None) }
@@ -296,19 +301,6 @@ impl UnitTrait for Unit {
             }
         }
         result
-    }
-    fn get_set_engage_meter(&self, value: Option<i32>) -> i32 {
-        static LOCK: Mutex<()> = Mutex::new(());
-        let _guard = LOCK.lock().unwrap();
-        if let Some(value) = value {
-            let value = value.clamp(0, self.get_engage_meter_limit());
-            unsafe {
-                unit_set_engage_count(self, value, None);
-                value
-            }
-        } else {
-            unsafe { unit_get_engage_count(self, None) }
-        }
     }
 }
 

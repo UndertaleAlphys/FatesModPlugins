@@ -425,9 +425,7 @@ extern "C" fn unit_get_engage_meter(
     args: &Il2CppArray<&DynValue>,
     _method: OptionalMethod,
 ) -> &'static DynValue {
-    let result = args
-        .try_get_unit(0)
-        .map_or(0, |u| u.get_set_engage_meter(None));
+    let result = args.try_get_unit(0).map_or(0, |u| u.get_engage_meter());
     DynValue::new_number(result as f64)
 }
 
@@ -435,7 +433,7 @@ extern "C" fn unit_set_engage_meter(args: &Il2CppArray<&DynValue>, _method: Opti
     if let Some(unit) = args.try_get_unit(0) {
         let meter = args.try_get_i32(1);
         History::engage_meter(unit);
-        unit.get_set_engage_meter(Some(meter));
+        unit.set_engage_meter(meter);
     }
 }
 

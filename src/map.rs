@@ -1,11 +1,6 @@
-use std::num::NonZero;
-
 use engage::{
     gamedata::{skill::SkillData, terrain::TerrainData, unit::Unit},
-    map::{
-        image::{MapImage, MapImageTerrain},
-        terrain::MapTerrain,
-    },
+    map::image::MapImageTerrain,
     mapmind::MapMind,
 };
 use unity::{il2cpp::object::Il2CppArray, prelude::*};

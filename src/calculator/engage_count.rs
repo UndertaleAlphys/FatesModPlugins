@@ -18,7 +18,7 @@ extern "C" fn get_engage_meter_unit(
     unit: Option<&Unit>,
     _method: OptionalMethod,
 ) -> f32 {
-    let result = unit.map_or(0, |u| u.get_set_engage_meter(None));
+    let result = unit.map_or(0, |u| u.get_engage_meter());
     result as f32
 }
 extern "C" fn set_engage_meter_unit(
@@ -29,6 +29,6 @@ extern "C" fn set_engage_meter_unit(
 ) {
     if let Some(unit) = unit {
         History::engage_meter(unit);
-        unit.get_set_engage_meter(Some(value as i32));
+        unit.set_engage_meter(value as i32);
     }
 }

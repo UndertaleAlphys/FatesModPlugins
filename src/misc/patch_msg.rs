@@ -1,6 +1,5 @@
 use crate::util::language;
-use skyline::{hooks::InlineCtx, install_hook};
-use std::mem::ManuallyDrop;
+use skyline::hooks::InlineCtx;
 use unity::prelude::Il2CppString;
 
 fn extra_patch_msg() -> String {
@@ -20,10 +19,9 @@ pub fn edit_patch_name(ctx: &mut InlineCtx) {
         &mut *((*ctx.registers[0].x.as_ref()) as *const Il2CppString as *mut Il2CppString)
     };
     let modified_name = patch_name.to_string() + &extra_patch_msg();
-    let modified_name = ManuallyDrop::new(Il2CppString::new(modified_name));
+    let modified_name = Il2CppString::new(modified_name);
     unsafe {
-        let ptr = (*modified_name) as *const Il2CppString;
-        let ptr = ptr as u64;
+        let ptr = modified_name as *const Il2CppString as u64;
         *ctx.registers[0].x.as_mut() = ptr
     };
 }
