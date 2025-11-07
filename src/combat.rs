@@ -1,5 +1,6 @@
 pub mod ai;
 pub mod battle_info;
+mod cannon;
 mod engage_count;
 mod no_dynlv;
 mod silence;
@@ -10,4 +11,5 @@ pub fn install() {
     skill_point::install();
     silence::install();
     no_dynlv::install();
+    cannon::install();
 }
