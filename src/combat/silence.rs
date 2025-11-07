@@ -31,7 +31,7 @@ pub fn silence_engage_attack(ctx: &mut InlineCtx) {
 #[skyline::hook(offset = 0x01930740)]
 pub fn interference_cal_score(ai: &mut AIInterferenceSimulator, method: OptionalMethod) {
     call_original!(ai, method);
-    let rod_equipped = ai.base_class.battle_info.get_side().get_unit_item();
+    let rod_equipped = ai.base_class.battle_info.get_offense_side().get_unit_item();
     if rod_equipped.item.usetype != use_type::SILENCE {
         return;
     }

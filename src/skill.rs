@@ -1,3 +1,4 @@
+mod adaptable_fix;
 pub mod bad_states;
 mod canto;
 pub mod flag;
@@ -5,6 +6,7 @@ pub mod map;
 pub mod overlap;
 mod weapon_expert;
 mod winged_sheild;
+
 use engage::gamedata::skill::SkillArray;
 use engage::gamedata::{skill::SkillData, unit::Unit};
 use unity::prelude::{Il2CppArray, OptionalMethod};
@@ -46,9 +48,9 @@ impl SkillArrayTrait for SkillArray {
     }
     fn contains_sid(&self, sid: impl AsRef<str>) -> bool {
         let mut result = false;
-        for skill in self.iter(){
-            if let Some(skill) = skill.get_skill(){
-                if skill.sid.to_string() == sid.as_ref(){
+        for skill in self.iter() {
+            if let Some(skill) = skill.get_skill() {
+                if skill.sid.to_string() == sid.as_ref() {
                     result = true;
                     break;
                 }
@@ -93,4 +95,5 @@ pub fn install() {
     map::install();
     weapon_expert::install();
     winged_sheild::install();
+    adaptable_fix::install();
 }

@@ -4,12 +4,16 @@ use engage::{
 };
 use unity::prelude::*;
 pub trait BattleInfoTrait {
-    fn get_side(&self) -> &BattleInfoSide;
+    fn get_offense_side(&self) -> &BattleInfoSide;
+    fn get_defense_side(&self) -> &BattleInfoSide;
 }
 
 impl BattleInfoTrait for BattleInfo {
-    fn get_side(&self) -> &BattleInfoSide {
+    fn get_offense_side(&self) -> &BattleInfoSide {
         unsafe { battle_info_get_side(self, 0, None) }
+    }
+    fn get_defense_side(&self) -> &BattleInfoSide {
+        unsafe { battle_info_get_side(self, 1, None) }
     }
 }
 
