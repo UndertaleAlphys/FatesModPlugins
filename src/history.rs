@@ -27,5 +27,6 @@ fn map_history_private_skill(unit: &Unit, method: OptionalMethod);
 #[unity::from_offset("App", "MapHistory", "EngageCount")]
 fn map_history_engage_count(unit: &Unit, method: OptionalMethod);
 
-#[unity::from_offset("App", "MapHistory", "UnitItemList")]
+// #[unity::from_offset("App", "MapHistory", "UnitItemList")]
+#[skyline::from_offset(0x01DDB4B0)]
 fn map_history_unit_item_list(unit: &Unit, method: OptionalMethod);

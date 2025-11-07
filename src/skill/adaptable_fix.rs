@@ -23,6 +23,7 @@ fn map_sequence_battle_commit_battle(this: &MapSequenceBattle, method: OptionalM
         if let Some(index) = index {
             History::item_list(unit);
             unit.item_list.equip(index as i32);
+            unit.update();
         }
     }
     call_original!(this, method)
