@@ -16,6 +16,7 @@ pub trait SkillTrait {
     fn get_move_target(&self) -> i32;
     fn get_range_i(&self) -> i32;
     fn get_range_add(&self) -> i32;
+    fn is_cannon_skill(&self) -> bool;
 }
 
 impl SkillTrait for SkillData {
@@ -33,6 +34,10 @@ impl SkillTrait for SkillData {
     }
     fn get_range_add(&self) -> i32 {
         unsafe { skill_get_range_add(self, None) }
+    }
+    fn is_cannon_skill(&self) -> bool {
+        self.sync_skills as *const _ != std::ptr::null()
+            && self.sync_skills.contains_sid("SID_CannonSkill")
     }
 }
 

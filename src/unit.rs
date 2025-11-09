@@ -42,7 +42,7 @@ pub trait UnitTrait {
     fn can_be_moved(&self) -> bool;
     fn can_revive(&self) -> bool;
     fn auto_equip_item(&self);
-    fn calc_item_range(&self, item: &ItemData) -> (i32, i32);
+    fn calc_item_range(&self, item: &ItemData, command: Option<&SkillData>) -> (i32, i32);
     fn is_enemy(&self) -> bool;
     fn get_weapon_level(&self, kind: i32, enhanced: bool) -> i32;
     fn set_engage_turn(&self, engage_turn: i32);
@@ -179,12 +179,12 @@ impl UnitTrait for Unit {
     fn auto_equip_item(&self) {
         unsafe { unit_item_equip(self, None) };
     }
-    fn calc_item_range(&self, item: &ItemData) -> (i32, i32) {
+    fn calc_item_range(&self, item: &ItemData, command: Option<&SkillData>) -> (i32, i32) {
         let mut i = item.range_i as i32;
         let mut o = item.range_o as i32;
         let mut extra = 0;
         if item.kind == kind::TOOL {
-            i = 0
+            i = 0;
         }
         if let Some(mask) = self.mask_skill {
             if item.kind == kind::ROD
@@ -196,25 +196,56 @@ impl UnitTrait for Unit {
             for skl in mask.iter() {
                 if let Some(skl) = skl.get_skill() {
                     let range_target = skl.get_range_target();
-                    if (range_target == 9 || item.kind == range_target as u32)
-                        && skl.is_condition_true(self, None)
-                    {
+                    let is_type_matched = range_target == 9 || item.kind == range_target as u32;
+                    if skl.is_cannon_skill() {
+                        i = if is_type_matched { skl.range_i } else { 0 };
+                        o = if is_type_matched { skl.range_o } else { 0 };
+                        extra = 0;
+                        break;
+                    } else if is_type_matched {
                         i = i.min(skl.get_range_i());
                         o = o.max(skl.get_range_o());
-                        extra = skl.get_range_add();
+                        extra += skl.get_range_add();
                     }
                 }
+            }
+            if let Some(command) = command {
+                let mut ci = command.get_range_i();
+                let mut co = command.get_range_o();
+                if ci == 0 {
+                    ci = i;
+                }
+                if co == 0 {
+                    co = o;
+                }
+                i = i.max(ci);
+                o = o.min(co);
             }
             if (mask.bad_states.contains(bad_states::SILENCE) && item.is_silence_target())
                 || mask.bad_states.contains(bad_states::SLEEP)
             {
                 i = 0;
                 o = 0;
+                extra = 0;
             }
         }
         i = i.clamp(0, 255);
         o = (o + extra).clamp(0, 255);
-        (i, o)
+        // println!(
+        //     "{} {} {} {i} {o}",
+        //     self.person
+        //         .name
+        //         .map_or("None".to_string(), |n| n.to_string()),
+        //     item.name.to_string(),
+        //     command.map_or("None".to_string(), |n| n
+        //         .name
+        //         .map_or("None".to_string(), |n| n.to_string())),
+        // );
+        if i <= o {
+            (i, o)
+        } else {
+            (0, 0)
+        }
     }
     fn is_enemy(&self) -> bool {
         self.force.map_or(0, |f| f.force_type) == 1
@@ -358,10 +389,10 @@ fn unit_calc_range(
     item: &ItemData,
     range_i: &mut i32,
     range_o: &mut i32,
-    _command_skill: Option<&SkillData>,
+    command_skill: Option<&SkillData>,
     _method: OptionalMethod,
 ) -> bool {
-    let (i, o) = unit.calc_item_range(item);
+    let (i, o) = unit.calc_item_range(item, command_skill);
     *range_i = i;
     *range_o = o;
     i <= o
