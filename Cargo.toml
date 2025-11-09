@@ -1,5 +1,5 @@
 [package]
-name = "if_mod_plugins"
+name = "IFModPlugins"
 version = "0.1.0"
 authors = ["Mercedes"]
 edition = "2021"
