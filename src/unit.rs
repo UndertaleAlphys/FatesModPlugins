@@ -2,7 +2,7 @@ use crate::history::History;
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
-    item::{kind, use_type, ItemListTrait, ItemTrait},
+    item::{kind, use_type, ItemTrait},
     skill::{
         bad_states::{self},
         flag, SkillTrait,
@@ -12,7 +12,6 @@ use crate::{
 };
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
 use engage::unitpool::UnitPool;
-use std::ops::Add;
 use unity::prelude::*;
 
 pub mod capability;

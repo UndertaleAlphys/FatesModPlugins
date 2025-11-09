@@ -1,8 +1,5 @@
 use crate::unit::terrain::UnitTerrainTrait;
-use engage::gamedata::{
-    terrain::{self, TerrainData},
-    unit::Unit,
-};
+use engage::gamedata::{terrain::TerrainData, unit::Unit};
 use skyline::hooks::InlineCtx;
 use unity::prelude::OptionalMethod;
 #[skyline::hook(offset = 0x01A34C90)]

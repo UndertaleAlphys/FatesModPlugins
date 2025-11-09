@@ -1,5 +1,4 @@
 use engage::{battle::BattleInfo, gamedata::unit::Unit};
-use unity::prelude::*;
 #[repr(C)]
 pub struct AISimulatorBase {
     pub offense: &'static mut Unit,

@@ -1,5 +1,5 @@
 [package]
-name = "IFmodPlugins"
+name = "if_mod_plugins"
 version = "0.1.0"
 authors = ["Mercedes"]
 edition = "2021"
@@ -19,15 +19,16 @@ sha2 = "0.10"
 walkdir = "2"
 bincode = "1"
 
-[profile.dev]
-panic = "abort"
-strip = "symbols"
-debug = false
-incremental = false
-opt-level = "z"
-lto = true
-codegen-units = 1
+#[profile.dev]
+#panic = "abort"
+#strip = "symbols"
+#debug = false
+#incremental = false
+#opt-level = "z"
+#lto = true
+#codegen-units = 1
 
 [profile.release]
 panic = "abort"
+strip = "symbols"
 lto = true

@@ -1,7 +1,6 @@
 use crate::calculator::command;
 use crate::calculator::util::{CalculatorManagerTrait, ListFloats};
 use crate::item::ItemTrait;
-use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
 use engage::calculator::CalculatorManager;
 use engage::{calculator::GameCalculatorCommand, gamedata::unit::Unit};

@@ -1,5 +1,5 @@
-use crate::class::{ClassTrait, GetClassGenderLock};
-use engage::gamedata::{skill::SkillArrayEntityList, unit::Unit, JobData};
+use crate::class::ClassTrait;
+use engage::gamedata::{unit::Unit, JobData};
 use skyline::hooks::InlineCtx;
 
 fn class_change_check_get_unit(ctx: &InlineCtx) -> &Unit {

@@ -1,5 +1,7 @@
 // Currently needed because we use these functionality, they'll be removable when the Rust language stabilizes them
 #![feature(lazy_cell, ptr_sub_ptr)]
+#![allow(dead_code)]
+#![allow(static_mut_refs)]
 
 mod calculator;
 mod class;
@@ -16,7 +18,6 @@ mod unit;
 mod util;
 mod verify;
 
-use unity::prelude::*;
 /// This is called a proc(edural) macro. You use this to indicate that a function will be used as a hook.
 ///
 /// Pay attention to the argument, offset.

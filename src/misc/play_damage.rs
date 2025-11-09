@@ -1,4 +1,4 @@
-use crate::unit::{capability, UnitTrait};
+use crate::unit::capability;
 use engage::calculator::GameCalculatorCommand;
 use engage::gamedata::unit::Unit;
 use skyline::patching::Patch;

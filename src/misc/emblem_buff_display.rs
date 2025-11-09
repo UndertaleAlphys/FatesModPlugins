@@ -78,7 +78,7 @@ fn unit_info_param_setter_set_emblem_buff(
     unit: &Unit,
     image: &UIImage,
     enhance: i32,
-    method: OptionalMethod,
+    _method: OptionalMethod,
 ) {
     let game_object = unsafe { unity_engine_component_get_game_object(image, None) };
     let should_show = enhance != 0;
@@ -109,7 +109,7 @@ fn app_unit_info_param_setter_set_param_text(
     call_original!(this, text, image, t, ex_str, method);
     let manager = get_instance::<UnitInfoParamManager>();
     let dir = manager.get_param(t).get_enhance_dir(true);
-    unsafe { unit_info_param_setter_set_emblem_buff(this, manager.calc_unit, image, dir, None) };
+    unit_info_param_setter_set_emblem_buff(this, manager.calc_unit, image, dir, None);
 }
 
 fn resolve_emblem_unit(unit: &Unit) -> Option<&GodData> {

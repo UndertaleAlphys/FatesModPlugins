@@ -68,7 +68,6 @@ fn around_buff_giver(
 ) {
     if let Some(unit) = unit {
         let image: &MapImage = get_instance();
-        let locs = unit.iter_range(range);
         let mut units = unit
             .iter_range(range)
             .iter()

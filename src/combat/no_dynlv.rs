@@ -1,7 +1,7 @@
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
 #[skyline::hook(offset = 0x02B4AFA0)]
-fn gmap_get_avg_lv(difficulty: i32, sortie_count: i32, method: OptionalMethod) -> i32 {
+fn gmap_get_avg_lv(_difficulty: i32, _sortie_count: i32, _method: OptionalMethod) -> i32 {
     1
 }
 // For Tri's mod

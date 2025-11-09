@@ -19,7 +19,7 @@ use skyline::patching::Patch;
 use std::collections::HashMap;
 use std::ops::Deref;
 use std::sync::OnceLock;
-use unity::prelude::{Il2CppClassData, Il2CppString, MethodInfo, OptionalMethod};
+use unity::prelude::{Il2CppString, OptionalMethod};
 
 pub fn install() {
     skyline::install_hooks!(
@@ -118,6 +118,7 @@ fn map_target_enumerate(ctx: &mut InlineCtx) {
     map_target_enumerate_cannon(this, is_fire_cannon);
 }
 
+#[inline]
 fn map_target_enumerate_cannon(this: &mut MapTarget, is_fire_cannon: bool) -> Option<()> {
     this.m_dataset.as_mut()?.clear();
     let unit = this.unit?;
@@ -205,14 +206,14 @@ fn map_cannon_range_should_show(ctx: &mut InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x01dfff90)]
-fn map_panel_active_set_mod(
-    map_panel_active: u64,
-    mode: i32,
-    is_force_update: bool,
-    command: &SkillData,
-    method: OptionalMethod,
-) {
-    println!("Mode={mode}");
-    call_original!(map_panel_active, mode, is_force_update, command, method);
-}
+// #[skyline::hook(offset = 0x01dfff90)]
+// fn map_panel_active_set_mod(
+//     map_panel_active: u64,
+//     mode: i32,
+//     is_force_update: bool,
+//     command: &SkillData,
+//     method: OptionalMethod,
+// ) {
+//     println!("Mode={mode}");
+//     call_original!(map_panel_active, mode, is_force_update, command, method);
+// }

@@ -19,7 +19,7 @@ fn can_item_use(
     if unit.is_none() || item.is_none() || target.is_none() || use_type == 0 {
         o_result
     } else {
-        let unit = unit.unwrap();
+        // let unit = unit.unwrap();
         let item = item.unwrap();
         let target = target.unwrap();
         match item.usetype {

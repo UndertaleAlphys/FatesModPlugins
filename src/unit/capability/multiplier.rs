@@ -1,5 +1,4 @@
-use crate::skill::SkillArrayTrait;
-use crate::unit::{capability, UnitTrait};
+use crate::unit::capability;
 use engage::gamedata::unit::Unit;
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;

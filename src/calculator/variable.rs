@@ -5,7 +5,6 @@ use crate::util::class::UnityClassTrait;
 use engage::battle::BattleInfoSide;
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::unit::Unit;
-use paste::paste;
 use unity::prelude::{Il2CppString, OptionalMethod};
 
 #[macro_export]

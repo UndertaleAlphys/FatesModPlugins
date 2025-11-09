@@ -1,6 +1,5 @@
 use crate::calculator::command;
 use crate::calculator::util::CalculatorManagerTrait;
-use crate::history::History;
 use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};

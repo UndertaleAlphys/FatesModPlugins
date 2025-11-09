@@ -11,7 +11,7 @@ use unity::prelude::*;
 
 static LAST_MOVE: AtomicI32 = AtomicI32::new(0);
 #[skyline::hook(offset = 0x02C33BF0)]
-pub fn get_distance(template: &MapDeployTemplate, x: i32, z: i32, method: OptionalMethod) -> i32 {
+pub fn get_distance(template: &MapDeployTemplate, x: i32, z: i32, _method: OptionalMethod) -> i32 {
     let mov_spent = template.move_image.get_value(x, z);
     if let Some(mov_spent) = mov_spent {
         let mov_spent = mov_spent as i32;

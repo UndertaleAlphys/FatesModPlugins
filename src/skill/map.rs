@@ -1,5 +1,3 @@
-use std::{cmp::Reverse, ptr::NonNull};
-
 use crate::{
     map::{Map, MapSkill, MapSkillResult, MapSkillResults},
     skill::{flag, SkillTrait},
@@ -7,16 +5,11 @@ use crate::{
     util::bitmask::BitMask,
 };
 use engage::{
-    gamedata::{
-        skill::{self, SkillData},
-        unit::Unit,
-    },
+    gamedata::{skill::SkillData, unit::Unit},
     map::image::MapImage,
-    sequence::mapsequencetargetselect::MapTarget,
     util::get_instance,
 };
 use skyline::{hooks::InlineCtx, patching::Patch};
-use unity::{il2cpp::method, prelude::OptionalMethod};
 
 #[skyline::hook(offset = 0x01F4E160)]
 fn map_skill_prediction_impl(
