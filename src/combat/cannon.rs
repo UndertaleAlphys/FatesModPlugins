@@ -91,10 +91,9 @@ fn cannons_other_than_fire_cannon_has_dont_create_terrain(ctx: &mut InlineCtx) {
     let image_terrain = get_instance::<MapImage>().terrain;
     let terrain = image_terrain.get_terrain(x, z);
     let is_fire_cannon = terrain.map_or(false, |t| t.is_fire_cannon());
-    let tid_nothing = Il2CppString::new("TID_無し");
     if !is_fire_cannon {
         unsafe {
-            *ctx.registers[3].x.as_mut() = tid_nothing as *const _ as _;
+            *ctx.registers[3].x.as_mut() = 0;
         }
     }
 }
