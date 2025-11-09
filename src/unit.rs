@@ -181,7 +181,6 @@ impl UnitTrait for Unit {
     fn calc_item_range(&self, item: &ItemData, command: Option<&SkillData>) -> (i32, i32) {
         let mut i = item.range_i as i32;
         let mut o = item.range_o as i32;
-        let mut extra = 0;
         if item.kind == kind::TOOL {
             i = 0;
         }
@@ -192,22 +191,31 @@ impl UnitTrait for Unit {
             {
                 i = 0
             }
+            let should_calc_cannon = mask.contains_sid("SID_CannonSkill");
+            let mut extra = 0;
             for skl in mask.iter() {
                 if let Some(skl) = skl.get_skill() {
                     let range_target = skl.get_range_target();
                     let is_type_matched = range_target == 9 || item.kind == range_target as u32;
-                    if skl.is_cannon_skill() {
+                    if should_calc_cannon && skl.is_cannon_skill() {
                         i = if is_type_matched { skl.range_i } else { 0 };
                         o = if is_type_matched { skl.range_o } else { 0 };
                         extra = 0;
                         break;
                     } else if is_type_matched {
-                        i = i.min(skl.get_range_i());
-                        o = o.max(skl.get_range_o());
+                        let si = skl.get_range_i();
+                        let so = skl.get_range_o();
+                        if si != 0 {
+                            i = i.min(skl.get_range_i());
+                        }
+                        if so != 0 {
+                            o = o.max(skl.get_range_o());
+                        }
                         extra += skl.get_range_add();
                     }
                 }
             }
+            o += extra;
             if let Some(command) = command {
                 let mut ci = command.get_range_i();
                 let mut co = command.get_range_o();
@@ -225,21 +233,10 @@ impl UnitTrait for Unit {
             {
                 i = 0;
                 o = 0;
-                extra = 0;
             }
         }
         i = i.clamp(0, 255);
-        o = (o + extra).clamp(0, 255);
-        // println!(
-        //     "{} {} {} {i} {o}",
-        //     self.person
-        //         .name
-        //         .map_or("None".to_string(), |n| n.to_string()),
-        //     item.name.to_string(),
-        //     command.map_or("None".to_string(), |n| n
-        //         .name
-        //         .map_or("None".to_string(), |n| n.to_string())),
-        // );
+        o = o.clamp(0, 255);
         if i <= o {
             (i, o)
         } else {

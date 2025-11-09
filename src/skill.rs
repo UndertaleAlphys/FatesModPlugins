@@ -36,8 +36,7 @@ impl SkillTrait for SkillData {
         unsafe { skill_get_range_add(self, None) }
     }
     fn is_cannon_skill(&self) -> bool {
-        self.sync_skills as *const _ != std::ptr::null()
-            && self.sync_skills.contains_sid("SID_CannonSkill")
+        self.sync_skills as *const _ as u64 != 0 && self.sync_skills.contains_sid("SID_CannonSkill")
     }
 }
 
