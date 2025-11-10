@@ -1,6 +1,5 @@
 use crate::{item::ItemListTrait, unit::UnitTrait};
 use engage::gamedata::{
-    item::{ItemData, UnitItem, UnitItemList},
     unit::Unit,
 };
 use unity::prelude::OptionalMethod;

@@ -1,5 +1,5 @@
 use crate::{
-    item::{self, use_type, ItemTrait},
+    item::{use_type, ItemTrait},
     unit::UnitTrait,
 };
 use engage::gamedata::{item::ItemData, skill::SkillArray, unit::Unit};

@@ -1,15 +1,12 @@
 use crate::{
     combat::{
-        ai::{AIInterferenceSimulator, AISimulatorBase},
+        ai::AIInterferenceSimulator,
         battle_info::{BattleInfoSideTrait, BattleInfoTrait},
     },
-    item::{use_type, ItemListTrait, ItemTrait},
+    item::{use_type, ItemTrait},
     util::bitmask::BitMask,
 };
-use engage::{
-    battle::{BattleInfo, BattleInfoSide},
-    gamedata::item::{ItemData, UnitItem},
-};
+use engage::gamedata::item::ItemData;
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
 #[skyline::hook(offset = 0x01A46970, inline)]

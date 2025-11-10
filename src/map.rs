@@ -1,3 +1,5 @@
+use engage::map::image::MapImage;
+use engage::util::get_instance;
 use engage::{
     gamedata::{skill::SkillData, terrain::TerrainData, unit::Unit},
     map::image::MapImageTerrain,
@@ -10,6 +12,20 @@ pub struct Map;
 impl Map {
     pub fn can_enter_terrain(unit: &Unit, x: i32, z: i32) -> bool {
         unsafe { map_can_enter_terrain(unit, x, z, None) }
+    }
+
+    pub fn get_play_area() -> ((i32, i32), (i32, i32)) {
+        let image: &MapImage = get_instance::<MapImage>();
+        let min_x = image.playarea_x1.min(image.playarea_x2);
+        let max_x = image.playarea_x1.max(image.playarea_x2);
+        let min_z = image.playarea_z1.min(image.playarea_z2);
+        let max_z = image.playarea_z1.max(image.playarea_z2);
+        ((min_x, min_z), (max_x, max_z))
+    }
+
+    pub fn is_in_play_area(x: i32, z: i32) -> bool {
+        let ((min_x, min_z), (max_x, max_z)) = Self::get_play_area();
+        min_x <= x && x <= max_x && min_z <= z && z <= max_z
     }
 }
 

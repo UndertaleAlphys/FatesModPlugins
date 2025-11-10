@@ -1,5 +1,6 @@
 use crate::class::move_type;
 use crate::history::History;
+use crate::map::Map;
 use crate::unit::UnitTrait;
 use engage::gamedata::skill::SkillData;
 use engage::map::image::MapImage;
@@ -105,6 +106,11 @@ impl ScriptIF {
         event.register_action("M023SkyBless", m023_sky_bless);
         event.register_function("UnitGetEngageMeter", unit_get_engage_meter);
         event.register_action("UnitSetEngageMeter", unit_set_engage_meter);
+        event.register_function("IsInUnitAttackImage", unit_image::is_in_attack);
+        event.register_function("IsInUnitInterferenceImage", unit_image::is_in_interference);
+        event.register_function("IsInUnitHealImage", unit_image::is_in_heal);
+        event.register_function("IsInUnitMoveImage", unit_image::is_in_move);
+        event.register_action("UpdateUnit", unit_update);
     }
 }
 
@@ -403,10 +409,7 @@ where
     G: Fn(&Unit),
 {
     let image: &MapImage = get_instance::<MapImage>();
-    let x_min = image.playarea_x1.min(image.playarea_x2);
-    let x_max = image.playarea_x1.max(image.playarea_x2);
-    let z_min = image.playarea_z1.min(image.playarea_z2);
-    let z_max = image.playarea_z1.max(image.playarea_z2);
+    let ((x_min, z_min), (x_max, z_max)) = Map::get_play_area();
     for x in x_min..=x_max {
         for z in z_min..=z_max {
             if let Some(unit) = image.get_target_unit(x, z) {
@@ -434,6 +437,66 @@ extern "C" fn unit_set_engage_meter(args: &Il2CppArray<&DynValue>, _method: Opti
         let meter = args.try_get_i32(1);
         History::engage_meter(unit);
         unit.set_engage_meter(meter);
+    }
+}
+
+mod unit_image {
+    use crate::unit::image::{MapImageCoreBit, UnitImageGet};
+    use engage::gamedata::unit::Unit;
+    use engage::script::{DynValue, ScriptUtils};
+    use unity::prelude::{Il2CppArray, OptionalMethod};
+
+    pub extern "C" fn is_in_attack(
+        args: &Il2CppArray<&DynValue>,
+        _method: OptionalMethod,
+    ) -> &'static DynValue {
+        let result = unit_is_in_image(args, UnitImageGet::attack_image);
+        DynValue::new_boolean(result)
+    }
+
+    pub extern "C" fn is_in_interference(
+        args: &Il2CppArray<&DynValue>,
+        _method: OptionalMethod,
+    ) -> &'static DynValue {
+        let result = unit_is_in_image(args, UnitImageGet::interference_image);
+        DynValue::new_boolean(result)
+    }
+
+    pub extern "C" fn is_in_heal(
+        args: &Il2CppArray<&DynValue>,
+        _method: OptionalMethod,
+    ) -> &'static DynValue {
+        let result = unit_is_in_image(args, UnitImageGet::heal_image);
+        DynValue::new_boolean(result)
+    }
+
+    pub extern "C" fn is_in_move(
+        args: &Il2CppArray<&DynValue>,
+        _method: OptionalMethod,
+    ) -> &'static DynValue {
+        let result = unit_is_in_image(args, UnitImageGet::move_image);
+        DynValue::new_boolean(result)
+    }
+
+    fn unit_is_in_image(
+        args: &Il2CppArray<&DynValue>,
+        image: fn(&Unit) -> Option<&'static MapImageCoreBit>,
+    ) -> bool {
+        if args.len() < 3 {
+            return false;
+        }
+        let Some(unit) = args.try_get_unit(0) else {
+            return false;
+        };
+        let x = args.try_get_i32(1);
+        let z = args.try_get_i32(2);
+        unit.is_in_image(x, z, image)
+    }
+}
+
+extern "C" fn unit_update(args: &Il2CppArray<&DynValue>, _method: OptionalMethod) {
+    if let Some(unit) = args.try_get_unit(0) {
+        unit.update();
     }
 }
 

@@ -1,4 +1,5 @@
 use crate::history::History;
+use crate::map::Map;
 use crate::skill::SkillArrayTrait;
 use crate::{
     class::ClassTrait,
@@ -7,16 +8,14 @@ use crate::{
         bad_states::{self},
         flag, SkillTrait,
     },
-    terrain::TerrainTrait,
     util::bitmask::BitMask,
 };
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
-use engage::map::image::MapImage;
 use engage::unitpool::UnitPool;
-use engage::util::get_instance;
 use unity::prelude::*;
 
 pub mod capability;
+pub mod image;
 pub mod status;
 pub mod terrain;
 
@@ -304,11 +303,7 @@ impl UnitTrait for Unit {
     }
     fn iter_range(&self, range: i32) -> Vec<(i32, i32)> {
         let mut result = Vec::new();
-        let image: &MapImage = get_instance::<MapImage>();
-        let min_x = image.playarea_x1.min(image.playarea_x2);
-        let max_x = image.playarea_x1.max(image.playarea_x2);
-        let min_z = image.playarea_z1.min(image.playarea_z2);
-        let max_z = image.playarea_z1.max(image.playarea_z2);
+        let ((min_x, min_z), (max_x, max_z)) = Map::get_play_area();
         let in_box = |(x, z)| min_x <= x && x <= max_x && min_z <= z && z <= max_z;
         if range > 0 && self.is_on_map() && self.is_in_play_area() {
             let center = (self.get_x(), self.get_z());

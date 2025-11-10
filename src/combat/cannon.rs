@@ -1,14 +1,13 @@
 mod inspector;
 
 use crate::combat::cannon::inspector::CannonInspectorTrait;
-use crate::map::MapImageTerrainTrait;
+use crate::map::{Map, MapImageTerrainTrait};
 use crate::terrain::TerrainTrait;
 use crate::unit::UnitTrait;
-use engage::gamedata::skill::SkillData;
 use engage::gamedata::terrain::TerrainData;
 use engage::gamedata::unit::Unit;
 use engage::map::image::MapImage;
-use engage::map::inspectors::{CannonInspector, Inspector, MapInspector};
+use engage::map::inspectors::{CannonInspector, MapInspector};
 use engage::mapmind::MapMind;
 use engage::sequence::mapsequencetargetselect::{MapTarget, MapTargetData};
 use engage::tmpro::TextMeshProUGUI;
@@ -17,7 +16,6 @@ use engage::util::get_instance;
 use skyline::hooks::InlineCtx;
 use skyline::patching::Patch;
 use std::collections::HashMap;
-use std::ops::Deref;
 use std::sync::OnceLock;
 use unity::prelude::{Il2CppString, OptionalMethod};
 
@@ -144,10 +142,8 @@ fn map_target_enumerate_cannon(this: &mut MapTarget, is_fire_cannon: bool) -> Op
     }
     let max_o = max_o?;
     let image = get_instance::<MapImage>();
-    let player_area_min_x = image.playarea_x1.min(image.playarea_x2);
-    let player_area_max_x = image.playarea_x1.max(image.playarea_x2);
-    let player_area_min_z = image.playarea_z1.min(image.playarea_z2);
-    let player_area_max_z = image.playarea_z1.max(image.playarea_z2);
+    let ((player_area_min_x, player_area_min_z), (player_area_max_x, player_area_max_z)) =
+        Map::get_play_area();
     let rect_min_x = player_area_min_x.max(unit.get_x() - max_o);
     let rect_max_x = player_area_max_x.min(unit.get_x() + max_o);
     let rect_min_z = player_area_min_z.max(unit.get_z() - max_o);
