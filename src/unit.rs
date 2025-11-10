@@ -11,7 +11,9 @@ use crate::{
     util::bitmask::BitMask,
 };
 use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
+use engage::map::image::MapImage;
 use engage::unitpool::UnitPool;
+use engage::util::get_instance;
 use unity::prelude::*;
 
 pub mod capability;
@@ -302,6 +304,12 @@ impl UnitTrait for Unit {
     }
     fn iter_range(&self, range: i32) -> Vec<(i32, i32)> {
         let mut result = Vec::new();
+        let image: &MapImage = get_instance::<MapImage>();
+        let min_x = image.playarea_x1.min(image.playarea_x2);
+        let max_x = image.playarea_x1.max(image.playarea_x2);
+        let min_z = image.playarea_z1.min(image.playarea_z2);
+        let max_z = image.playarea_z1.max(image.playarea_z2);
+        let in_box = |(x, z)| min_x <= x && x <= max_x && min_z <= z && z <= max_z;
         if range > 0 && self.is_on_map() && self.is_in_play_area() {
             let center = (self.get_x(), self.get_z());
             let (center_x, center_z) = center;
@@ -310,7 +318,7 @@ impl UnitTrait for Unit {
             for i in 0..range + 1 {
                 for j in 0..range + 1 {
                     let point = (start_x - i + j, start_z + i + j);
-                    if point != center {
+                    if point != center && in_box(point) {
                         result.push(point);
                     }
                 }
@@ -321,7 +329,7 @@ impl UnitTrait for Unit {
             for i in 0..range {
                 for j in 0..range {
                     let point = (start_x - i + j, start_z + i + j);
-                    if point != center {
+                    if point != center && in_box(point) {
                         result.push(point);
                     }
                 }
