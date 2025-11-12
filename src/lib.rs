@@ -17,6 +17,7 @@ mod terrain;
 mod unit;
 mod util;
 mod verify;
+mod message;
 
 /// This is called a proc(edural) macro. You use this to indicate that a function will be used as a hook.
 ///

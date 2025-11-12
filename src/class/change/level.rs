@@ -1,4 +1,5 @@
 use crate::class::*;
+use crate::skill::SkillArrayTrait;
 use engage::gamedata::{item::ItemData, unit::Unit, JobData};
 use skyline::hooks::InlineCtx;
 
@@ -108,10 +109,26 @@ pub fn class_change(
 ) {
     call_original!(this, job_data, item_data, method_info);
     let current_class = this.get_job();
-    if this.level >= current_class.max_level {
-        if job_data.has_class_skill() {
-            this.learn_job_skill(job_data);
+    let should_learn = if let Some(learn_skill) = current_class.learn_skill {
+        if SkillData::get(learn_skill).is_some() {
+            if this.level >= current_class.max_level {
+                true
+            } else if this
+                .equip_skill_pool
+                .contains_sid(learn_skill.to_string().as_str())
+            {
+                true
+            } else {
+                false
+            }
+        } else {
+            false
         }
+    } else {
+        false
+    };
+    if should_learn {
+        this.learn_job_skill(current_class);
     }
 }
 

@@ -12,6 +12,7 @@ use engage::{
 };
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
+use crate::unit::skill::UnitSkillTrait;
 
 #[repr(C)]
 pub struct Vector3 {

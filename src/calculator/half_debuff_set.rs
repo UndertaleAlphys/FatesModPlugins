@@ -6,6 +6,7 @@ use crate::util::class::UnityClassTrait;
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::unit::Unit;
 use unity::prelude::{Il2CppString, OptionalMethod};
+use crate::unit::skill::UnitSkillTrait;
 
 pub fn add(manager: &mut CalculatorManager) {
     if let Some(half_debuff_set_command_c) = manager.clone_from_name(command::HP) {

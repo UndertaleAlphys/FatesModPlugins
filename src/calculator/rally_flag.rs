@@ -1,13 +1,13 @@
 use crate::calculator::command;
 use crate::calculator::util::CalculatorManagerTrait;
 use crate::history::History;
-use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::skill::SkillData;
 use engage::gamedata::unit::Unit;
 use engage::gamedata::Gamedata;
 use unity::prelude::{Il2CppString, OptionalMethod};
+use crate::unit::skill::UnitSkillTrait;
 
 pub fn add(manager: &mut CalculatorManager) {
     if let Some(rally_flag_c) = manager.clone_from_name(command::HP) {

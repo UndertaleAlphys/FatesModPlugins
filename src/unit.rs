@@ -1,6 +1,7 @@
 use crate::history::History;
 use crate::map::Map;
 use crate::skill::SkillArrayTrait;
+use crate::unit::skill::UnitSkillTrait;
 use crate::{
     class::ClassTrait,
     item::{kind, use_type, ItemTrait},
@@ -10,22 +11,20 @@ use crate::{
     },
     util::bitmask::BitMask,
 };
-use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, Gamedata, WeaponMask};
+use engage::gamedata::{item::ItemData, skill::SkillData, unit::Unit, WeaponMask};
 use engage::unitpool::UnitPool;
 use unity::prelude::*;
 
 pub mod capability;
 pub mod image;
+mod level_up;
+pub mod skill;
 pub mod status;
 pub mod terrain;
 
 const MALE_GENDER: i32 = 1;
 const FEMALE_GENDER: i32 = 2;
 pub trait UnitTrait {
-    fn add_skill(&self, skill: &SkillData);
-    fn add_sid(&self, sid: impl AsRef<str>);
-    fn remove_private_sid(&self, sid: impl AsRef<str>);
-    fn has_whole_sid(&self, sid: impl AsRef<str>) -> bool;
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32;
     fn set_variable(&self, variable_name: impl AsRef<str>, value: i32);
     fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32;
@@ -54,26 +53,6 @@ pub trait UnitTrait {
 }
 
 impl UnitTrait for Unit {
-    fn add_skill(&self, skill: &SkillData) {
-        unsafe { unit_add_skill(self, skill, None) }
-    }
-    fn add_sid(&self, sid: impl AsRef<str>) {
-        let skill = SkillData::get(sid.as_ref());
-        if let Some(skill) = skill {
-            self.add_skill(skill);
-        }
-    }
-    fn remove_private_sid(&self, sid: impl AsRef<str>) {
-        unsafe { unit_remove_private_sid(self, sid.into(), None) }
-    }
-
-    fn has_whole_sid(&self, sid: impl AsRef<str>) -> bool {
-        self.has_sid(sid.as_ref().into())
-            || self.private_skill.contains_sid(sid.as_ref())
-            || self.receive_skill.contains_sid(sid.as_ref())
-            || self.supported_skill.contains_sid(sid.as_ref())
-    }
-
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32 {
         let prefix = format!("SID_{}_", variable_name.as_ref());
         let mut result = 0;
@@ -334,12 +313,6 @@ impl UnitTrait for Unit {
     }
 }
 
-#[skyline::from_offset(0x01A5D430)]
-fn unit_add_skill(unit: &Unit, skill_data: &SkillData, method: OptionalMethod);
-
-#[skyline::from_offset(0x01A38090)]
-fn unit_remove_private_sid(unit: &Unit, sid: &Il2CppString, method: OptionalMethod);
-
 // #[unity::from_offset("App", "Unit", "set_EngageCount")]
 #[skyline::from_offset(0x01A264A0)]
 fn unit_set_engage_count(this: &Unit, value: i32, method_info: OptionalMethod);
@@ -399,5 +372,7 @@ fn unit_calc_range(
 
 pub fn install() {
     capability::install();
+    skill::install();
+    level_up::install();
     skyline::install_hooks!(unit_calc_range, unit_set_engage_turn);
 }
