@@ -11,6 +11,7 @@ pub fn add(manager: &mut CalculatorManager) {
     if let Some(engage_meter_c) = manager.find_checked(command::ENGAGE_METER) {
         engage_meter_c.assign_virtual_method("GetImpl", get_engage_meter_unit as _);
         engage_meter_c.assign_virtual_method("SetImpl", set_engage_meter_unit as _);
+        engage_meter_c.assign_virtual_method("AddImpl", add_engage_meter_unit as _);
     }
 }
 extern "C" fn get_engage_meter_unit(
@@ -30,5 +31,18 @@ extern "C" fn set_engage_meter_unit(
     if let Some(unit) = unit {
         History::engage_meter(unit);
         unit.set_engage_meter(value as i32);
+    }
+}
+
+extern "C" fn add_engage_meter_unit(
+    _this: &GameCalculatorCommand,
+    unit: Option<&Unit>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    if let Some(unit) = unit {
+        History::engage_meter(unit);
+        let value = value as i32;
+        unit.change_engage_meter(|old_meter| old_meter + value)
     }
 }

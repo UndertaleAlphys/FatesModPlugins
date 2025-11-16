@@ -1,9 +1,11 @@
 use crate::class::move_type;
 use crate::history::History;
-use crate::map::Map;
+use crate::map::{Map, MapMindTrait};
+use crate::unit::skill::UnitSkillTrait;
 use crate::unit::UnitTrait;
 use engage::gamedata::skill::SkillData;
 use engage::map::image::MapImage;
+use engage::mapmind::MapMind;
 use engage::script::EventResultScriptCommand;
 use engage::util::get_instance;
 use engage::{
@@ -12,7 +14,6 @@ use engage::{
 };
 use skyline::hooks::InlineCtx;
 use unity::prelude::*;
-use crate::unit::skill::UnitSkillTrait;
 
 #[repr(C)]
 pub struct Vector3 {
@@ -112,6 +113,7 @@ impl ScriptIF {
         event.register_function("IsInUnitHealImage", unit_image::is_in_heal);
         event.register_function("IsInUnitMoveImage", unit_image::is_in_move);
         event.register_action("UpdateUnit", unit_update);
+        event.register_action("UnitSetEngageMeterM017", unit_set_engage_meter_m017);
     }
 }
 
@@ -436,6 +438,27 @@ extern "C" fn unit_get_engage_meter(
 extern "C" fn unit_set_engage_meter(args: &Il2CppArray<&DynValue>, _method: OptionalMethod) {
     if let Some(unit) = args.try_get_unit(0) {
         let meter = args.try_get_i32(1);
+        History::engage_meter(unit);
+        unit.set_engage_meter(meter);
+    }
+}
+
+extern "C" fn unit_set_engage_meter_m017(args: &Il2CppArray<&DynValue>, _method: OptionalMethod) {
+    if let Some(unit) = args.try_get_unit(0) {
+        let meter = args.try_get_i32(1).clamp(0, unit.get_engage_meter_limit());
+        let mind: &MapMind = get_instance();
+        let mind_units = [mind.get_unit(), mind.get_target_unit()];
+        for mind_unit in mind_units {
+            if let Some(mind_unit) = mind_unit {
+                if mind_unit.index == unit.index {
+                    History::private_skill(mind_unit);
+                    History::engage_meter(mind_unit);
+                    mind_unit.set_engage_meter(0);
+                    mind_unit.add_sid(format!("SID_M017_SetEngageMeter_{meter}"));
+                    return;
+                }
+            }
+        }
         History::engage_meter(unit);
         unit.set_engage_meter(meter);
     }

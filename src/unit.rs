@@ -25,12 +25,16 @@ pub mod terrain;
 const MALE_GENDER: i32 = 1;
 const FEMALE_GENDER: i32 = 2;
 pub trait UnitTrait {
+    fn get_name_string(&self) -> String;
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32;
     fn set_variable(&self, variable_name: impl AsRef<str>, value: i32);
     fn get_debuff(&self, debuff_type: impl AsRef<str>) -> i32;
     fn set_debuff(&self, debuff_type: impl AsRef<str>, debuff: i32);
     fn get_engage_meter(&self) -> i32;
     fn set_engage_meter(&self, meter: i32);
+    fn change_engage_meter<F>(&self, f: F)
+    where
+        F: Fn(i32) -> i32;
     fn get_engage_meter_limit(&self) -> i32;
     fn is_engage_meter_full(&self) -> bool;
     fn get_hp(&self) -> i32;
@@ -53,6 +57,14 @@ pub trait UnitTrait {
 }
 
 impl UnitTrait for Unit {
+    fn get_name_string(&self) -> String {
+        let name = self
+            .get_person()
+            .name
+            .map_or("None".into(), |name| name.to_string());
+        format!("{}:{}", self.index, name)
+    }
+
     fn get_variable(&self, variable_name: impl AsRef<str>) -> i32 {
         let prefix = format!("SID_{}_", variable_name.as_ref());
         let mut result = 0;
@@ -107,11 +119,20 @@ impl UnitTrait for Unit {
         unsafe { unit_get_engage_count(self, None) }
     }
     fn set_engage_meter(&self, meter: i32) {
-        let meter = meter.clamp(0, self.get_engage_meter_limit());
+        self.change_engage_meter(|_| meter);
+    }
+
+    fn change_engage_meter<F>(&self, f: F)
+    where
+        F: Fn(i32) -> i32,
+    {
+        let prev_meter = self.get_engage_meter();
+        let new_meter = f(prev_meter).clamp(0, self.get_engage_meter_limit());
         unsafe {
-            unit_set_engage_count(self, meter, None);
+            unit_set_engage_count(self, new_meter, None);
         }
     }
+
     fn get_engage_meter_limit(&self) -> i32 {
         unsafe { unit_get_engage_count_limit(self, None) }
     }
@@ -314,7 +335,7 @@ impl UnitTrait for Unit {
 }
 
 // #[unity::from_offset("App", "Unit", "set_EngageCount")]
-#[skyline::from_offset(0x01A264A0)]
+#[skyline::from_offset(0x01a264a0)]
 fn unit_set_engage_count(this: &Unit, value: i32, method_info: OptionalMethod);
 
 #[unity::from_offset("App", "Unit", "get_EngageCount")]
