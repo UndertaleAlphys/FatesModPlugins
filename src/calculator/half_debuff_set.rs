@@ -1,12 +1,12 @@
 use crate::calculator::command;
 use crate::calculator::util::CalculatorManagerTrait;
 use crate::history::History;
+use crate::unit::skill::UnitSkillTrait;
 use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::unit::Unit;
 use unity::prelude::{Il2CppString, OptionalMethod};
-use crate::unit::skill::UnitSkillTrait;
 
 pub fn add(manager: &mut CalculatorManager) {
     if let Some(half_debuff_set_command_c) = manager.clone_from_name(command::HP) {
@@ -43,12 +43,10 @@ extern "C" fn half_debuff_set_set_impl(
 fn set_half_debuff(who: &Unit, which_debuff: impl AsRef<str>) {
     let debuff_giver_sid = format!("SID_{}Halved", which_debuff.as_ref());
     let debuff_effect_sid = format!("{}Effect", debuff_giver_sid.as_str());
-    if who.has_sid(debuff_giver_sid.as_str().into()) {
-        if who.has_sid(debuff_effect_sid.as_str().into()) {
-            who.remove_private_sid(debuff_effect_sid.as_str());
-        } else {
-            who.add_sid(debuff_effect_sid.as_str());
-            who.set_variable("DebuffAnimationFlag", 1);
-        }
+    if who.has_sid(debuff_effect_sid.as_str().into()) {
+        who.remove_private_sid(debuff_effect_sid.as_str());
+    } else if who.has_sid(debuff_giver_sid.as_str().into()) {
+        who.add_sid(debuff_effect_sid.as_str());
+        who.set_variable("DebuffAnimationFlag", 1);
     }
 }
