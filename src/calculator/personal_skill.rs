@@ -14,6 +14,7 @@ use engage::util::get_instance;
 use unity::prelude::{Il2CppString, OptionalMethod};
 
 pub fn add(manager: &mut CalculatorManager) {
+    // Vtable indexes need more tests...
     if let Some(add) = manager.clone_from_name(command::MALE_FEMALE_COUNTS) {
         add.assign_virtual_method("get_Name", add_personal_skill_command_name as _);
         add.assign_vtable(36, add_personal_skill_unit as _);

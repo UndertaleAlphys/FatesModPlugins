@@ -6,6 +6,7 @@ mod command;
 mod engage_count;
 mod engage_turn;
 mod half_debuff_set;
+mod is_in_play_area;
 mod item;
 mod none;
 mod personal_skill;
@@ -27,7 +28,8 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     buff_eirike::add(manager);
     half_debuff_set::add(manager);
     engage_count::add(manager);
-    personal_skill::add(manager);
+    is_in_play_area::add(manager);
+    // personal_skill::add(manager);
 }
 
 pub fn install() {

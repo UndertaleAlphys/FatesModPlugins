@@ -17,3 +17,4 @@ pub const HALF_DEBUFF_SET: &str = "HalfDebuffSet";
 pub const ENGAGE_METER: &str = "エンゲージカウント";
 pub const ADD_PERSONAL_SKILL: &str = "AddPersonalSkill";
 pub const REMOVE_PERSONAL_SKILL: &str = "RemovePersonalSkill";
+pub const IS_IN_PLAY_AREA: &str = "IsInPlayArea";
