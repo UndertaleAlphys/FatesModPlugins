@@ -1,3 +1,4 @@
+pub const NONE: &str = "_";
 pub const HP: &str = "HP";
 pub const TERRAIN_AVO: &str = "地形回避";
 pub const TERRAIN_DEF: &str = "地形防御";
@@ -14,3 +15,5 @@ pub const AROUND_BUFF_GENTLE_WIND: &str = "AroundBuffGentleWind";
 pub const AROUND_BUFF_BRAVE_SKY: &str = "AroundBuffBraveSky";
 pub const HALF_DEBUFF_SET: &str = "HalfDebuffSet";
 pub const ENGAGE_METER: &str = "エンゲージカウント";
+pub const ADD_PERSONAL_SKILL: &str = "AddPersonalSkill";
+pub const REMOVE_PERSONAL_SKILL: &str = "RemovePersonalSkill";

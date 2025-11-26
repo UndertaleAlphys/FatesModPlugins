@@ -16,7 +16,7 @@ pub fn add(manager: &mut CalculatorManager) {
     }
 }
 
-fn get_inventory_item_count_command_name(
+extern "C" fn get_inventory_item_count_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
 ) -> &'static Il2CppString {
@@ -24,7 +24,7 @@ fn get_inventory_item_count_command_name(
     command::INVENTORY_ITEM_COUNT.into()
 }
 
-fn inventory_item_count(
+extern "C" fn inventory_item_count(
     _this: &GameCalculatorCommand,
     unit: Option<&Unit>,
     args: &ListFloats,
