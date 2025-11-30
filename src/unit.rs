@@ -21,6 +21,8 @@ mod level_up;
 pub mod skill;
 pub mod status;
 pub mod terrain;
+pub mod force;
+pub mod pool;
 
 const MALE_GENDER: i32 = 1;
 const FEMALE_GENDER: i32 = 2;

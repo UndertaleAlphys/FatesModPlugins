@@ -1,5 +1,5 @@
 use crate::calculator::command;
-use crate::calculator::util::{CalculatorManagerTrait, ListFloats};
+use crate::calculator::util::CalculatorManagerTrait;
 use crate::combat::battle_info::BattleInfoSideTrait;
 use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
