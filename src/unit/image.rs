@@ -1,4 +1,5 @@
 use crate::map::Map;
+use crate::util::bitmask::BitMask;
 use engage::gamedata::unit::Unit;
 use unity::prelude::Il2CppArray;
 
@@ -39,7 +40,7 @@ impl UnitImageGet for Unit {
         }
         let image = image(self);
         let Some(image) = image else { return false };
-        image.images[(z << 5 + x) as usize] != 0
+        image.get(x, z)
     }
 }
 
@@ -56,4 +57,14 @@ fn address_to_map_image(addr: u64) -> Option<&'static MapImageCoreBit> {
 #[unity::class("App", "MapImageCoreBit")]
 pub struct MapImageCoreBit {
     pub images: &'static Il2CppArray<u32>,
+}
+
+impl MapImageCoreBit {
+    fn get(&self, x: i32, z: i32) -> bool {
+        assert!(x >= 0 && x < 32 && z >= 0 && z < 32);
+        // z = set
+        // x = block
+        let block_value = self.images[z as usize];
+        (block_value >> x & 1) == 1
+    }
 }

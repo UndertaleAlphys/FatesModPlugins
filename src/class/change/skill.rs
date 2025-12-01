@@ -1,11 +1,8 @@
 use crate::unit::skill::UnitSkillTrait;
 use engage::gamedata::skill::SkillData;
 use engage::gamedata::Gamedata;
-use engage::gamemessage::GameMessage;
-use engage::mess::Mess;
 use engage::sequence::unitgrowsequence::UnitGrowSequence;
 use unity::prelude::OptionalMethod;
-use unity::system::Il2CppString;
 
 #[skyline::hook(offset = 0x01f7f580)]
 fn unit_grow_sequence_class_change(this: &UnitGrowSequence, method: OptionalMethod) {
