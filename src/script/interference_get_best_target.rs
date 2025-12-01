@@ -29,6 +29,9 @@ pub extern "C" fn enfeeble(
     for foe_unit in ForceIterator::new(foe_force_type) {
         let x = foe_unit.get_x();
         let z = foe_unit.get_z();
+        if !unit.is_in_image(x, z, UnitImageGet::interference_image) {
+            continue;
+        }
         let mut in_range_count = 0;
         for ally_unit in ForceIterator::new(force_type) {
             if ally_unit.index != unit.index
@@ -98,6 +101,9 @@ pub extern "C" fn freeze(
     for foe_unit in ForceIterator::new(foe_force_type) {
         let x = foe_unit.get_x();
         let z = foe_unit.get_z();
+        if !unit.is_in_image(x, z, UnitImageGet::interference_image) {
+            continue;
+        }
         let mut in_range_count = 0;
         for ally_unit in ForceIterator::new(force_type) {
             if ally_unit.index != unit.index

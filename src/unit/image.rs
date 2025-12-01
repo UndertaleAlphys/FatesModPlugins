@@ -1,5 +1,4 @@
 use crate::map::Map;
-use crate::util::bitmask::BitMask;
 use engage::gamedata::unit::Unit;
 use unity::prelude::Il2CppArray;
 
