@@ -1,5 +1,5 @@
 use sha2::{Digest, Sha512};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
@@ -13,7 +13,7 @@ pub fn verify() -> Result<(), String> {
         return Err("Failed to find hash file.".to_string());
     }
     let hash_map =
-        bincode::deserialize::<HashMap<String, Vec<u8>>>(&fs::read(hash_path).unwrap()[..]);
+        bincode::deserialize::<BTreeMap<String, Vec<u8>>>(&fs::read(hash_path).unwrap()[..]);
     if hash_map.is_err() {
         return Err("Failed to deserialize hash file.".to_string());
     }
