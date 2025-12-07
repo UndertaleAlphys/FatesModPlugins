@@ -24,7 +24,8 @@ fn map_history_engage_turn(unit: &Unit, method: OptionalMethod);
 #[skyline::from_offset(0x01DD9420)]
 fn map_history_private_skill(unit: &Unit, method: OptionalMethod);
 
-#[unity::from_offset("App", "MapHistory", "EngageCount")]
+// #[unity::from_offset("App", "MapHistory", "EngageCount")]
+#[skyline::from_offset(0x01dd8ca0)]
 fn map_history_engage_count(unit: &Unit, method: OptionalMethod);
 
 // #[unity::from_offset("App", "MapHistory", "UnitItemList")]
