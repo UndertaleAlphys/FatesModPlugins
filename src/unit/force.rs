@@ -28,8 +28,9 @@ impl Iterator for ForceIterator {
     type Item = &'static Unit;
     fn next(&mut self) -> Option<Self::Item> {
         if self.current_index <= self.max_index {
+            let unit = UnitPool::get_by_index(self.current_index).map(|u| &*u);
             self.current_index += 1;
-            UnitPool::get_by_index(self.current_index).map(|u| &*u)
+            unit
         } else {
             None
         }
