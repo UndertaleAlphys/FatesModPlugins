@@ -6,6 +6,7 @@ mod no_well;
 mod patch_msg;
 mod play_damage;
 mod save_header;
+mod style_bonus_skill_unequip_fix;
 
 pub fn install() {
     no_well::install();
@@ -16,4 +17,5 @@ pub fn install() {
     difficulty_select::install();
     play_damage::install();
     emblem_buff_display::install();
+    style_bonus_skill_unequip_fix::install();
 }
