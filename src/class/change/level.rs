@@ -81,7 +81,7 @@ fn level_reset(ctx: &mut InlineCtx) {
     let reset_level = match job_data.get_class_rank() {
         ClassRank::Advanced => match unit_class_rank {
             ClassRank::Advanced => unit.level,
-            ClassRank::Special => unit.level.min(20),
+            ClassRank::Special => unit.level.max(20),
             ClassRank::Base => 20,
         },
         ClassRank::Base => match unit_class_rank {
