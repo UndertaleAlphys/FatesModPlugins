@@ -1,4 +1,3 @@
-mod adaptable_fix;
 pub mod bad_states;
 mod canto;
 pub mod flag;
@@ -99,5 +98,4 @@ pub fn install() {
     map::install();
     weapon_expert::install();
     winged_sheild::install();
-    adaptable_fix::install();
 }

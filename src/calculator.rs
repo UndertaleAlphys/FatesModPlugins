@@ -5,12 +5,14 @@ mod class;
 mod command;
 mod engage_count;
 mod engage_turn;
+mod follow_up;
 mod half_debuff_set;
 mod is_in_play_area;
 mod item;
 mod none;
 mod personal_skill;
 mod rally_flag;
+mod revive;
 mod terrain;
 mod util;
 mod variable;
@@ -30,6 +32,8 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     engage_count::add(manager);
     is_in_play_area::add(manager);
     // personal_skill::add(manager);
+    revive::add(manager);
+    follow_up::add(manager);
 }
 
 pub fn install() {

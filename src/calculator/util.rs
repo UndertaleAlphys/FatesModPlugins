@@ -1,5 +1,7 @@
 use crate::util::class::{CanGetClass, UnityClassTrait};
-use engage::calculator::{CalculatorCommand, CalculatorManager, GameCalculatorCommand};
+use engage::calculator::{
+    CalculatorCommand, CalculatorManager, GameCalculatorCommand, IsCalculatorCommand,
+};
 use unity::il2cpp::object::Array;
 use unity::il2cpp::{self};
 use unity::prelude::{Il2CppClass, OptionalMethod};
@@ -21,7 +23,7 @@ pub trait CalculatorManagerTrait {
         &mut self,
         command_name: impl AsRef<str>,
     ) -> Option<&'static mut GameCalculatorCommand>;
-    fn add_with_reverse(&mut self, command: &mut GameCalculatorCommand);
+    fn add_with_reverse(&mut self, command: &mut (impl IsCalculatorCommand + CanGetClass));
 }
 
 impl CalculatorManagerTrait for CalculatorManager {
@@ -48,7 +50,7 @@ impl CalculatorManagerTrait for CalculatorManager {
         }
     }
 
-    fn add_with_reverse(&mut self, command: &mut GameCalculatorCommand) {
+    fn add_with_reverse(&mut self, command: &mut (impl IsCalculatorCommand + CanGetClass)) {
         self.add_command(command);
         if let Some(command) = command.clone() {
             self.add_command(command.reverse());

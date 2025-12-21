@@ -1,7 +1,9 @@
 use crate::calculator::command;
 use crate::calculator::util::CalculatorManagerTrait;
+use crate::combat::battle_info::BattleInfoSideTrait;
+use crate::unit::UnitTrait;
 use crate::util::class::UnityClassTrait;
-use engage::battle::BattleInfo;
+use engage::battle::{BattleInfo, BattleInfoSide};
 use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::unit::Unit;
 use unity::prelude::{Il2CppString, OptionalMethod};
@@ -41,16 +43,18 @@ extern "C" fn get_none_battle_info(
 
 extern "C" fn set_none_unit(
     _this: &GameCalculatorCommand,
-    _unit: Option<&Unit>,
-    _value: f32,
+    unit: Option<&Unit>,
+    value: f32,
     _method: OptionalMethod,
 ) {
+    println!("Unit:{} Debug:{}", unit.unwrap().get_name_string(), value);
 }
 
 extern "C" fn set_none_battle_info(
-    _this: &GameCalculatorCommand,
-    _battle_info: &BattleInfo,
-    _value: f32,
-    _method: OptionalMethod,
+    this: &GameCalculatorCommand,
+    battle_info: &BattleInfoSide,
+    value: f32,
+    method: OptionalMethod,
 ) {
+    set_none_unit(this, battle_info.get_unit(), value, method);
 }

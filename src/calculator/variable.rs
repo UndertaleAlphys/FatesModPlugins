@@ -31,13 +31,18 @@ macro_rules! gen_vecs {
                     [<set_ $base _unit>] as *mut u8
                 ),+
             ];
-            (name, get_impl, get_impl_battle, set_impl)
+            let set_impl_battle: Vec<*mut u8> = vec![
+                $(
+                    [<set_ $base _battle_info>] as *mut u8
+                ),+
+            ];
+            (name, get_impl, get_impl_battle, set_impl, set_impl_battle)
         }
     }};
 }
 
 pub fn add(manager: &mut CalculatorManager) {
-    let (name, get_impl, get_impl_battle, set_impl) = gen_vecs!([
+    let (name, get_impl, get_impl_battle, set_impl, set_impl_battle) = gen_vecs!([
         debuff_str,
         debuff_mag,
         debuff_dex,
@@ -67,6 +72,7 @@ pub fn add(manager: &mut CalculatorManager) {
             debuff_c.assign_virtual_method("GetImpl", get_impl[index]);
             debuff_c.assign_vtable(31, get_impl_battle[index]);
             debuff_c.assign_virtual_method("SetImpl", set_impl[index]);
+            debuff_c.assign_vtable(33, set_impl_battle[index]);
             manager.add_command(debuff_c);
             if let Some(reverse) = debuff_c.clone() {
                 manager.add_command(reverse.reverse());
@@ -108,6 +114,16 @@ extern "C" fn set_debuff_str_unit(
     unit.map(|u| u.set_variable("DebuffStr", value as i32));
 }
 
+extern "C" fn set_debuff_str_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("DebuffStr", value as i32));
+}
+
 extern "C" fn get_debuff_mag_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -138,6 +154,16 @@ extern "C" fn set_debuff_mag_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("DebuffMag", value as i32));
+}
+
+extern "C" fn set_debuff_mag_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("DebuffMag", value as i32));
 }
 
@@ -174,6 +200,16 @@ extern "C" fn set_debuff_dex_unit(
     unit.map(|u| u.set_variable("DebuffDex", value as i32));
 }
 
+extern "C" fn set_debuff_dex_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("DebuffDex", value as i32));
+}
+
 extern "C" fn get_debuff_spd_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -204,6 +240,16 @@ extern "C" fn set_debuff_spd_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("DebuffSpd", value as i32));
+}
+
+extern "C" fn set_debuff_spd_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("DebuffSpd", value as i32));
 }
 
@@ -240,6 +286,16 @@ extern "C" fn set_debuff_lck_unit(
     unit.map(|u| u.set_variable("DebuffLck", value as i32));
 }
 
+extern "C" fn set_debuff_lck_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("DebuffLck", value as i32));
+}
+
 extern "C" fn get_debuff_def_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -270,6 +326,16 @@ extern "C" fn set_debuff_def_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("DebuffDef", value as i32));
+}
+
+extern "C" fn set_debuff_def_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("DebuffDef", value as i32));
 }
 
@@ -306,6 +372,16 @@ extern "C" fn set_debuff_res_unit(
     unit.map(|u| u.set_variable("DebuffRes", value as i32));
 }
 
+extern "C" fn set_debuff_res_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("DebuffRes", value as i32));
+}
+
 extern "C" fn get_stackable_new_debuff_str_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -336,6 +412,16 @@ extern "C" fn set_stackable_new_debuff_str_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("StackableNewDebuffStr", value as i32));
+}
+
+extern "C" fn set_stackable_new_debuff_str_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("StackableNewDebuffStr", value as i32));
 }
 
@@ -372,6 +458,16 @@ extern "C" fn set_stackable_new_debuff_mag_unit(
     unit.map(|u| u.set_variable("StackableNewDebuffMag", value as i32));
 }
 
+extern "C" fn set_stackable_new_debuff_mag_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("StackableNewDebuffMag", value as i32));
+}
+
 extern "C" fn get_stackable_new_debuff_dex_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -402,6 +498,16 @@ extern "C" fn set_stackable_new_debuff_dex_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("StackableNewDebuffDex", value as i32));
+}
+
+extern "C" fn set_stackable_new_debuff_dex_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("StackableNewDebuffDex", value as i32));
 }
 
@@ -438,6 +544,16 @@ extern "C" fn set_stackable_new_debuff_spd_unit(
     unit.map(|u| u.set_variable("StackableNewDebuffSpd", value as i32));
 }
 
+extern "C" fn set_stackable_new_debuff_spd_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("StackableNewDebuffSpd", value as i32));
+}
+
 extern "C" fn get_stackable_new_debuff_lck_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -468,6 +584,16 @@ extern "C" fn set_stackable_new_debuff_lck_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("StackableNewDebuffLck", value as i32));
+}
+
+extern "C" fn set_stackable_new_debuff_lck_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("StackableNewDebuffLck", value as i32));
 }
 
@@ -504,6 +630,16 @@ extern "C" fn set_stackable_new_debuff_def_unit(
     unit.map(|u| u.set_variable("StackableNewDebuffDef", value as i32));
 }
 
+extern "C" fn set_stackable_new_debuff_def_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("StackableNewDebuffDef", value as i32));
+}
+
 extern "C" fn get_stackable_new_debuff_res_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -534,6 +670,16 @@ extern "C" fn set_stackable_new_debuff_res_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("StackableNewDebuffRes", value as i32));
+}
+
+extern "C" fn set_stackable_new_debuff_res_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("StackableNewDebuffRes", value as i32));
 }
 
@@ -570,6 +716,16 @@ extern "C" fn set_non_stackable_new_debuff_str_unit(
     unit.map(|u| u.set_variable("NonStackableNewDebuffStr", value as i32));
 }
 
+extern "C" fn set_non_stackable_new_debuff_str_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("NonStackableNewDebuffStr", value as i32));
+}
+
 extern "C" fn get_non_stackable_new_debuff_mag_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -600,6 +756,16 @@ extern "C" fn set_non_stackable_new_debuff_mag_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("NonStackableNewDebuffMag", value as i32));
+}
+
+extern "C" fn set_non_stackable_new_debuff_mag_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("NonStackableNewDebuffMag", value as i32));
 }
 
@@ -636,6 +802,16 @@ extern "C" fn set_non_stackable_new_debuff_dex_unit(
     unit.map(|u| u.set_variable("NonStackableNewDebuffDex", value as i32));
 }
 
+extern "C" fn set_non_stackable_new_debuff_dex_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("NonStackableNewDebuffDex", value as i32));
+}
+
 extern "C" fn get_non_stackable_new_debuff_spd_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -666,6 +842,16 @@ extern "C" fn set_non_stackable_new_debuff_spd_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("NonStackableNewDebuffSpd", value as i32));
+}
+
+extern "C" fn set_non_stackable_new_debuff_spd_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("NonStackableNewDebuffSpd", value as i32));
 }
 
@@ -702,6 +888,16 @@ extern "C" fn set_non_stackable_new_debuff_lck_unit(
     unit.map(|u| u.set_variable("NonStackableNewDebuffLck", value as i32));
 }
 
+extern "C" fn set_non_stackable_new_debuff_lck_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("NonStackableNewDebuffLck", value as i32));
+}
+
 extern "C" fn get_non_stackable_new_debuff_def_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -732,6 +928,16 @@ extern "C" fn set_non_stackable_new_debuff_def_unit(
     value: f32,
     _method: OptionalMethod,
 ) {
+    unit.map(|u| u.set_variable("NonStackableNewDebuffDef", value as i32));
+}
+
+extern "C" fn set_non_stackable_new_debuff_def_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
     unit.map(|u| u.set_variable("NonStackableNewDebuffDef", value as i32));
 }
 
@@ -768,6 +974,16 @@ extern "C" fn set_non_stackable_new_debuff_res_unit(
     unit.map(|u| u.set_variable("NonStackableNewDebuffRes", value as i32));
 }
 
+extern "C" fn set_non_stackable_new_debuff_res_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("NonStackableNewDebuffRes", value as i32));
+}
+
 extern "C" fn get_debuff_animation_flag_command_name(
     _this: &GameCalculatorCommand,
     _method: OptionalMethod,
@@ -801,3 +1017,12 @@ extern "C" fn set_debuff_animation_flag_unit(
     unit.map(|u| u.set_variable("DebuffAnimationFlag", value as i32));
 }
 
+extern "C" fn set_debuff_animation_flag_battle_info(
+    _this: &GameCalculatorCommand,
+    battle_info_side: Option<&BattleInfoSide>,
+    value: f32,
+    _method: OptionalMethod,
+) {
+    let unit = battle_info_side.map(|b| b.unit).unwrap_or(None);
+    unit.map(|u| u.set_variable("DebuffAnimationFlag", value as i32));
+}
