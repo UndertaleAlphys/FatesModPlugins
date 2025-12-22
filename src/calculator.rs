@@ -31,7 +31,7 @@ pub fn add_command_hook(manager: &mut CalculatorManager, method_info: OptionalMe
     half_debuff_set::add(manager);
     engage_count::add(manager);
     is_in_play_area::add(manager);
-    // personal_skill::add(manager);
+    personal_skill::add(manager);
     revive::add(manager);
     follow_up::add(manager);
 }

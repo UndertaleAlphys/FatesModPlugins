@@ -9,8 +9,6 @@ use engage::calculator::{CalculatorManager, GameCalculatorCommand};
 use engage::gamedata::skill::SkillData;
 use engage::gamedata::unit::Unit;
 use engage::gamedata::Gamedata;
-use engage::map::image::MapImage;
-use engage::util::get_instance;
 use unity::prelude::{Il2CppString, OptionalMethod};
 
 pub fn add(manager: &mut CalculatorManager) {
@@ -49,14 +47,10 @@ where
     let mut result = false;
     if let Some(unit) = unit {
         if unit.is_on_map() && unit.is_in_play_area() {
-            if let Some(unit) =
-                get_instance::<MapImage>().get_target_unit(unit.get_x(), unit.get_z())
-            {
-                if let Some(skill) = SkillData::get(sid) {
-                    History::private_skill(unit);
-                    action(unit, skill);
-                    result = true;
-                }
+            if let Some(skill) = SkillData::get(sid) {
+                History::private_skill(unit);
+                action(unit, skill);
+                result = true;
             }
         }
     }

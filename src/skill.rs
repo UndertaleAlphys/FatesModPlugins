@@ -1,4 +1,5 @@
 pub mod bad_states;
+mod block_recovery;
 mod canto;
 pub mod flag;
 pub mod map;
@@ -98,4 +99,5 @@ pub fn install() {
     map::install();
     weapon_expert::install();
     winged_sheild::install();
+    block_recovery::install();
 }
