@@ -31,11 +31,8 @@ extern "C" fn follow_up_ability_get_battle_info(
     calc_follow_up_ability(battle_info) as f32
 }
 
-#[inline]
-fn battle_info_side_get_spd(side: &BattleInfoSide) -> i32 {
-    side.unit
-        .map_or(0, |u| u.get_capability(capability::SPD, true))
-}
+#[skyline::from_offset(0x01e89400)]
+fn battle_info_side_get_spd(side: &BattleInfoSide, method: OptionalMethod) -> i32;
 
 fn calc_value_by_prefix(side: &BattleInfoSide, prefix: impl AsRef<str>) -> i32 {
     let mut result = 0;
@@ -82,8 +79,8 @@ fn calc_follow_up_ability(side: &BattleInfoSide) -> i32 {
     if side.get_unit().is_none() || cannot_follow_up(side) {
         0
     } else {
-        let unit_spd = battle_info_side_get_spd(side);
-        let foe_spd = battle_info_side_get_spd(side.reverse);
+        let unit_spd = unsafe { battle_info_side_get_spd(side, None) };
+        let foe_spd = unsafe { battle_info_side_get_spd(side.reverse, None) };
         let mut result = unit_spd - foe_spd;
         result += calc_follow_up_offset(side);
         result += calc_darting_blow_offset(side);
