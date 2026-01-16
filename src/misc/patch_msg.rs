@@ -4,13 +4,15 @@ use unity::prelude::Il2CppString;
 
 fn extra_patch_msg() -> String {
     let lan = language::get();
-    let mod_name = "Engage Fates";
+    let mod_name = "Fates";
+    let mod_version =
+        std::fs::read_to_string(r"sd:/engage/mods/IF mod (Cobalt)/v").unwrap_or("None".into());
     let mod_info = if lan == language::SIMPLIFIED_CHINESE {
         "永久免费"
     } else {
         "Free Forever"
     };
-    let result = format!("\n{}\n{}", mod_name, mod_info);
+    let result = format!("\n{} v{}\n{}", mod_name, mod_version, mod_info);
     result
 }
 #[skyline::hook(offset = 0x022975BC, inline)]

@@ -27,8 +27,8 @@ fn my_room_difficulty_change(this: &BasicMenuItem, method: OptionalMethod) -> i3
 
 pub fn install() {
     skyline::install_hooks!(
-        main_menu_normal_ctor,
-        main_menu_hard_ctor,
-        my_room_difficulty_change
+        // main_menu_normal_ctor,
+        // main_menu_hard_ctor,
+        // my_room_difficulty_change
     );
 }

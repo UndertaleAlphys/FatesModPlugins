@@ -52,9 +52,10 @@ pub extern "C" fn enfeeble(
             debuff_add += (4 - foe_unit.get_debuff(debuff_type)).max(0) * debuff_value;
         }
         let debuff_score = debuff_add as f64;
-        let in_range_score = (1 + in_range_count) as f64;
-        let hp_score = foe_unit.get_capability(capability::MAXHP, true) as f64
-            / foe_unit.get_hp().clamp(1, 3) as f64;
+        let in_range_score = 0.001 + in_range_count as f64;
+        let hp_score = (foe_unit.get_capability(capability::MAXHP, true) as f64
+            / foe_unit.get_hp().max(1) as f64)
+            .min(3.0);
         let score = debuff_score * in_range_score * hp_score;
         if score > best_score {
             best_score = score;

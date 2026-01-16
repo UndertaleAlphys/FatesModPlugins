@@ -4,7 +4,7 @@ use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
 
-pub fn verify() -> Result<(), String> {
+pub fn verify_mod_file() -> Result<(), String> {
     const ROOT_DIR: &str = "sd:/engage/mods/IF mod (Cobalt)";
     let ignore_list = vec!["/h", "/libIFmodPlugins.nro"];
     let hash_path = format!("{ROOT_DIR}/h");

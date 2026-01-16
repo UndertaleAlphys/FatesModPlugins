@@ -87,7 +87,7 @@ fn level_reset(ctx: &mut InlineCtx) {
         ClassRank::Base => match unit_class_rank {
             ClassRank::Advanced => 1,
             ClassRank::Special => {
-                if unit.level <= 20 {
+                if unit.level < 20 {
                     unit.level
                 } else {
                     1
