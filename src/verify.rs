@@ -1,3 +1,4 @@
+use junk;
 use sha2::{Digest, Sha512};
 use std::collections::BTreeMap;
 use std::fs;
@@ -19,35 +20,37 @@ pub fn verify_mod_file() -> Result<(), String> {
     }
     let mut hash_map = hash_map.unwrap().clone();
     for entry in WalkDir::new(ROOT_DIR) {
-        if let Ok(entry) = entry {
-            if entry.path().exists() && entry.path().is_file() {
-                let file_content = fs::read(entry.path()).unwrap();
-                let mut hasher = Sha512::new();
-                hasher.update(file_content);
-                let actual_hash = hasher.finalize().to_vec();
-                let path_str = entry.path().to_str();
-                if path_str.is_none() {
-                    return Err("Failed to convert path to string.".to_string());
-                }
-                let path_str = path_str.unwrap().replace("\\", "/");
-                let relative_path = path_str.strip_prefix(ROOT_DIR);
-                if relative_path.is_none() {
-                    return Err("Failed to strip prefix.".to_string());
-                }
-                let relative_path = relative_path.unwrap();
-                if ignore_list.contains(&relative_path) {
-                    continue;
-                }
-                let hash = hash_map.get(relative_path);
-                if hash.is_none() {
-                    return Err(format!("{}: Failed to find hash.", relative_path));
-                }
-                let expected_hash = hash.unwrap();
-                if *expected_hash != actual_hash {
-                    return Err(format!("{relative_path}: Mismatched hash"));
-                }
-                hash_map.remove(relative_path);
+        let Ok(entry) = entry else { continue };
+        let Some(file_str) = entry.path().file_name().and_then(|os| os.to_str()) else {
+            continue;
+        };
+        if entry.path().exists() && entry.path().is_file() && !junk::is(file_str) {
+            let file_content = fs::read(entry.path()).unwrap();
+            let mut hasher = Sha512::new();
+            hasher.update(file_content);
+            let actual_hash = hasher.finalize().to_vec();
+            let path_str = entry.path().to_str();
+            if path_str.is_none() {
+                return Err("Failed to convert path to string.".to_string());
             }
+            let path_str = path_str.unwrap().replace("\\", "/");
+            let relative_path = path_str.strip_prefix(ROOT_DIR);
+            if relative_path.is_none() {
+                return Err("Failed to strip prefix.".to_string());
+            }
+            let relative_path = relative_path.unwrap();
+            if ignore_list.contains(&relative_path) {
+                continue;
+            }
+            let hash = hash_map.get(relative_path);
+            if hash.is_none() {
+                return Err(format!("{}: Failed to find hash.", relative_path));
+            }
+            let expected_hash = hash.unwrap();
+            if *expected_hash != actual_hash {
+                return Err(format!("{relative_path}: Mismatched hash"));
+            }
+            hash_map.remove(relative_path);
         }
     }
     if hash_map.is_empty() {

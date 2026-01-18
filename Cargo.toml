@@ -18,6 +18,7 @@ paste = "1.0"
 sha2 = "0.10"
 walkdir = "2"
 bincode = "1"
+junk = "0.1"
 
 #[profile.dev]
 #panic = "abort"
